@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/alert_ivents"
-        android:title="Alert ivents"
+        android:id="@+id/alarm_events"
+        android:title="Alarm events"
         android:icon="@drawable/ic_alert_events_black_24dp"
         android:iconTint="@color/colorAccent"/>
 
