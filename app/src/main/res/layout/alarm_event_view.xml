@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -21,10 +21,10 @@
         android:id="@+id/viewSupporter"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewVerifiedUser"
-        app:layout_constraintEnd_toEndOf="@id/imageViewVerifiedUser"
-        app:layout_constraintStart_toStartOf="@id/imageViewVerifiedUser"
-        app:layout_constraintTop_toTopOf="@id/imageViewVerifiedUser"/>
+        app:layout_constraintBottom_toBottomOf="@+id/alarm_event_icon_recyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/alarm_event_icon_recyclerView"
+        app:layout_constraintStart_toStartOf="@+id/alarm_event_icon_recyclerView"
+        app:layout_constraintTop_toTopOf="@+id/alarm_event_icon_recyclerView"/>
 
 
     <TextView
@@ -37,7 +37,7 @@
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@id/viewSupporter"
-        app:layout_constraintStart_toEndOf="@id/imageViewVerifiedUser"
+        app:layout_constraintStart_toEndOf="@+id/alarm_event_icon_recyclerView"
         />
 
     <TextView
@@ -48,7 +48,8 @@
         android:text="DD.MM.YYYY HH:MI:SS"
         android:textSize="16sp"
         android:textStyle="bold|italic"
-        app:layout_constraintStart_toEndOf="@id/imageViewVerifiedUser"
-        app:layout_constraintTop_toBottomOf="@id/viewSupporter" />
+        app:layout_constraintStart_toEndOf="@id/alarm_event_icon_recyclerView"
+        app:layout_constraintTop_toBottomOf="@id/viewSupporter"
+         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
