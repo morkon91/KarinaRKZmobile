@@ -1,4 +1,4 @@
-package com.example.karinarkzmobile;
+package com.example.karinarkzmobile.mainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.example.karinarkzmobile.eventInfoActivity.EventInfoActivity;
+import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.adapter.AlarmEventsAdapter;
 import com.example.karinarkzmobile.data.AlarmData;
 
@@ -22,10 +23,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 
-public class AlarmEventsFragment extends Fragment {
+public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
 
     private RecyclerView alarmEventsRecyclerView;
     private AlarmEventsAdapter adapter;
+
+    private IAlarmEvents.Presenter mPresenter;
+
 
     public AlarmEventsFragment() {
         // Required empty public constructor
@@ -47,6 +51,8 @@ public class AlarmEventsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        mPresenter = new AlarmEventsPresenter(this);
+
         alarmEventsRecyclerView = view.findViewById(R.id.alarm_events_recyclerView);
         alarmEventsRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
 
@@ -60,30 +66,15 @@ public class AlarmEventsFragment extends Fragment {
         adapter = new AlarmEventsAdapter(onEventClickListener);
         alarmEventsRecyclerView.setAdapter(adapter);
 
-        loadAlarmEvents();
+        mPresenter.getAlarmEvents();
 
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void loadAlarmEvents() {
-        Collection<AlarmData> collection = getAlarmEvents();
-        adapter.setItems(collection);
-    }
 
-    private Collection<AlarmData> getAlarmEvents() {
-        return Arrays.asList(
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38),
-                new AlarmData("Teplovizor 1", "10/02/2020 14:45", 38)
-        );
+    @Override
+    public void showAlarmEvents(Collection<AlarmData> alarmData) {
+        Collection<AlarmData> collection = alarmData;
+        adapter.setItems(collection);
     }
 }
