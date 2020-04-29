@@ -1,4 +1,4 @@
-package com.example.karinarkzmobile.mainActivity;
+package com.example.karinarkzmobile.mainActivity.alarmEventsFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,8 +19,8 @@ import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.adapter.AlarmEventsAdapter;
 import com.example.karinarkzmobile.data.AlarmData;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 
 public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
@@ -73,8 +73,14 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
 
 
     @Override
-    public void showAlarmEvents(Collection<AlarmData> alarmData) {
-        Collection<AlarmData> collection = alarmData;
+    public void showAlarmEvents(List<AlarmData> listOfAlarmEvents) {
+        List<AlarmData> collection = listOfAlarmEvents;
         adapter.setItems(collection);
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.removeListener();
+        super.onDestroyView();
     }
 }
