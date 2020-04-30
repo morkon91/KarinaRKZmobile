@@ -25,15 +25,26 @@ import java.util.List;
 
 public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
 
+    public static final String EXT_ALARM_DATA = AlarmData.class.getSimpleName();
+
+//    public static AlarmEventsFragment newInstance(AlarmData alarmData) {
+//        AlarmEventsFragment fragment = new AlarmEventsFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable(EXT_ALARM_DATA, alarmData);
+//
+//        return fragment;
+//    }
+//
+//    private AlarmData getAlarmData() {
+//        return (AlarmData) getArguments().getSerializable(EXT_ALARM_DATA);
+//    }
+
     private RecyclerView alarmEventsRecyclerView;
     private AlarmEventsAdapter adapter;
 
     private IAlarmEvents.Presenter mPresenter;
 
 
-    public AlarmEventsFragment() {
-        // Required empty public constructor
-    }
 
 
     @Override
@@ -60,6 +71,7 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
             @Override
             public void onEventClick(AlarmData alarmEvent) {
                 Intent intent = new Intent(getContext(), EventInfoActivity.class);
+                intent.putExtra(EXT_ALARM_DATA, alarmEvent);
                 startActivity(intent);
             }
         };

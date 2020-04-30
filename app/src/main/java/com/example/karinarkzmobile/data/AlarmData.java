@@ -1,17 +1,19 @@
 package com.example.karinarkzmobile.data;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class AlarmData {
+public class AlarmData implements Serializable {
 
     private int alarmEventID;
     private String timeOfAlarmEvent;
     private String locationOfAlarmEvent;
-    private double temperature;
+    private String temperature;
     private String ordinaryPhotoURL;
     private String temperaturePhotoURL;
 
-    public AlarmData(int alarmEventID, String timeOfAlarmEvent, String locationOfAlarmEvent, double temperature, String ordinaryPhotoURL, String temperaturePhotoURL) {
+    public AlarmData(int alarmEventID, String timeOfAlarmEvent, String locationOfAlarmEvent, String temperature,
+                     String ordinaryPhotoURL, String temperaturePhotoURL) {
         this.alarmEventID = alarmEventID;
         this.timeOfAlarmEvent = timeOfAlarmEvent;
         this.locationOfAlarmEvent = locationOfAlarmEvent;
@@ -26,9 +28,9 @@ public class AlarmData {
         if (o == null || getClass() != o.getClass()) return false;
         AlarmData alarmData = (AlarmData) o;
         return alarmEventID == alarmData.alarmEventID &&
-                Double.compare(alarmData.temperature, temperature) == 0 &&
                 Objects.equals(timeOfAlarmEvent, alarmData.timeOfAlarmEvent) &&
                 Objects.equals(locationOfAlarmEvent, alarmData.locationOfAlarmEvent) &&
+                Objects.equals(temperature, alarmData.temperature) &&
                 Objects.equals(ordinaryPhotoURL, alarmData.ordinaryPhotoURL) &&
                 Objects.equals(temperaturePhotoURL, alarmData.temperaturePhotoURL);
     }
@@ -50,7 +52,7 @@ public class AlarmData {
         this.locationOfAlarmEvent = locationOfAlarmEvent;
     }
 
-    public void setTemperature(double temperature) {
+    public void setTemperature(String temperature) {
         this.temperature = temperature;
     }
 
@@ -74,7 +76,7 @@ public class AlarmData {
         return locationOfAlarmEvent;
     }
 
-    public double getTemperature() {
+    public String getTemperature() {
         return temperature;
     }
 

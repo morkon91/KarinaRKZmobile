@@ -11,8 +11,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.karinarkzmobile.R;
+import com.example.karinarkzmobile.data.AlarmData;
+import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.AlarmEventsFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -26,16 +29,35 @@ public class EventInfoActivity extends AppCompatActivity {
     private OrdinaryPhotoFragment ordinaryPhotoFragment;
     private TemperaturePhotoFragment temperaturePhotoFragment;
 
+    private TextView locationEventInfo, timeOfAlarmEventInfo, detectedTemperature;
+
+    private AlarmData alarmEvent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
 
+        locationEventInfo = findViewById(R.id.location_event_info_textView);
+        timeOfAlarmEventInfo = findViewById(R.id.time_of_alarm_event_textView);
+        detectedTemperature = findViewById(R.id.detected_temperature_textView);
+
+        Bundle arguments = getIntent().getExtras();
+        if (arguments != null){
+            alarmEvent = (AlarmData) arguments.getSerializable(AlarmEventsFragment.EXT_ALARM_DATA);
+        }
+        locationEventInfo.setText(alarmEvent.getLocationOfAlarmEvent());
+        timeOfAlarmEventInfo.setText(alarmEvent.getTimeOfAlarmEvent());
+        detectedTemperature.setText(alarmEvent.getTemperature());
+
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
 
         ordinaryPhotoFragment = new OrdinaryPhotoFragment();
+        ordinaryPhotoFragment.setArguments(getIntent().getExtras());
+
         temperaturePhotoFragment = new TemperaturePhotoFragment();
+        temperaturePhotoFragment.setArguments(getIntent().getExtras());
 
         tabLayout.setupWithViewPager(viewPager);
 

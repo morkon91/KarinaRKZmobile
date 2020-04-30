@@ -74,6 +74,7 @@
         android:textSize="18sp"/>
 
     <TextView
+        android:id="@+id/location_event_info_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Teplovizor 1"
@@ -90,6 +91,7 @@
         android:textSize="18sp"/>
 
     <TextView
+        android:id="@+id/time_of_alarm_event_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="DD.MM.YYYY HH:MI:SS"
@@ -106,6 +108,7 @@
         android:textSize="18sp"/>
 
     <TextView
+        android:id="@+id/detected_temperature_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="38°"
