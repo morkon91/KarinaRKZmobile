@@ -4,6 +4,7 @@ import com.example.karinarkzmobile.AlarmEventsRepository;
 import com.example.karinarkzmobile.ServiceLocator;
 import com.example.karinarkzmobile.data.AlarmData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlarmEventsPresenter implements IAlarmEvents.Presenter, IAlarmEvents.Repository.IEventsListener {
@@ -12,7 +13,7 @@ public class AlarmEventsPresenter implements IAlarmEvents.Presenter, IAlarmEvent
     private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
 
 
-    List<AlarmData> listOfAlarmEvents;
+    List<AlarmData> listOfAlarmEvents = new ArrayList<>();
 
 
     public AlarmEventsPresenter(IAlarmEvents.View mView) {
@@ -34,6 +35,6 @@ public class AlarmEventsPresenter implements IAlarmEvents.Presenter, IAlarmEvent
 
     @Override
     public void onNewEvent(List<AlarmData> updatedList) {
-
+        mView.showAlarmEvents(updatedList);
     }
 }

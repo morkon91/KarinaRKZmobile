@@ -1,6 +1,7 @@
 package com.example.karinarkzmobile;
 
 import android.app.Application;
+import android.content.Intent;
 
 public class App extends Application {
 
@@ -8,5 +9,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         ServiceLocator.init();
+        startService(new Intent(this, EventService.class));
     }
 }

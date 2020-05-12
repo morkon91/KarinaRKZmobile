@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.karinarkzmobile.R;
@@ -25,11 +26,6 @@ public class OrdinaryPhotoFragment extends Fragment {
 
     private ImageView ordinaryImageView;
     private AlarmData alarmEvent;
-
-    public OrdinaryPhotoFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +42,13 @@ public class OrdinaryPhotoFragment extends Fragment {
                 .with(getContext())
                 .load(alarmEvent.getOrdinaryPhotoURL())
                 .into(ordinaryImageView);
+
+        ordinaryImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Go to ordinary photo activity", Toast.LENGTH_SHORT).show();
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 

@@ -1,18 +1,19 @@
 package com.example.karinarkzmobile;
 
+import android.content.Intent;
+import android.util.Log;
+
 import com.example.karinarkzmobile.data.AlarmData;
 import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.IAlarmEvents;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AlarmEventsRepository implements IAlarmEvents.Repository {
 
-    private List<AlarmData> alarmDataList;
+    private List<AlarmData> alarmDataList = new ArrayList<>();
     private IEventsListener eventsListener;
-
-
-
 
     @Override
     public int loadEventCount() {
@@ -21,6 +22,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository {
 
     @Override
     public void loadAlarmEventList() {
+        Log.d("myLogs", String.valueOf(alarmDataList.size()));
          alarmDataList = Arrays.asList(
                 new AlarmData(1,
                         "12.12.2020 14:55",
@@ -39,6 +41,10 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository {
                          "38,2", "https://lh3.googleusercontent.com/proxy/Ou5HUBRzq8pys3rZ7sThl1hTuJXTpFA8fOObuf6l" +
                          "-9lK9TBFQWYEEPIE9rfY2EJ1gBrpj8ZSXnuN0R7tHs8C0Oam58Ng-SHlzuqTzy9-dqbhCYXBYoi2Ec6okV3X0iLhcKghRf2DwTZwg70OEQCJ6pc",
                          "https://wpapers.ru/wallpapers/All/9582/1024x768_Череп.jpg"));
+
+
+
+
 
         if (eventsListener != null) {
             eventsListener.onNewEvent(alarmDataList);

@@ -16,10 +16,9 @@ import android.widget.LinearLayout;
 
 import com.example.karinarkzmobile.eventInfoActivity.EventInfoActivity;
 import com.example.karinarkzmobile.R;
-import com.example.karinarkzmobile.adapter.AlarmEventsAdapter;
+import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.adapter.AlarmEventsAdapter;
 import com.example.karinarkzmobile.data.AlarmData;
 
-import java.util.Collection;
 import java.util.List;
 
 
@@ -86,8 +85,13 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
 
     @Override
     public void showAlarmEvents(List<AlarmData> listOfAlarmEvents) {
-        List<AlarmData> collection = listOfAlarmEvents;
-        adapter.setItems(collection);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                List<AlarmData> collection = listOfAlarmEvents;
+                adapter.setItems(collection);
+            }
+        });
     }
 
     @Override

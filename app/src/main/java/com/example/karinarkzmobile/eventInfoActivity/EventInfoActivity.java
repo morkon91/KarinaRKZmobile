@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.data.AlarmData;
@@ -88,7 +89,6 @@ public class EventInfoActivity extends AppCompatActivity {
         public void addFragment(Fragment fragment, String title){
             fragments.add(fragment);
             fragmentTitle.add(title);
-
         }
 
         @NonNull

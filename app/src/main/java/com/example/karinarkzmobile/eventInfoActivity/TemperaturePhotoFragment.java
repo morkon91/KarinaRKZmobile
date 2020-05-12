@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.karinarkzmobile.R;
@@ -24,11 +25,6 @@ public class TemperaturePhotoFragment extends Fragment {
 
     private ImageView temperatureImageView;
     private AlarmData alarmEvent;
-
-    public TemperaturePhotoFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +41,13 @@ public class TemperaturePhotoFragment extends Fragment {
                 .with(getContext())
                 .load(alarmEvent.getTemperaturePhotoURL())
                 .into(temperatureImageView);
+
+        temperatureImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Go to temperature photo activity", Toast.LENGTH_SHORT).show();
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 

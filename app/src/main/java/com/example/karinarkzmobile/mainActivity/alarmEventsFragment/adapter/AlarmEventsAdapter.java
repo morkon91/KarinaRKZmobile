@@ -1,4 +1,4 @@
-package com.example.karinarkzmobile.adapter;
+package com.example.karinarkzmobile.mainActivity.alarmEventsFragment.adapter;
 
 
 import android.view.LayoutInflater;
