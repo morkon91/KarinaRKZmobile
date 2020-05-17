@@ -45,6 +45,7 @@ public class AlarmEventsAdapter extends RecyclerView.Adapter<AlarmEventsAdapter.
 
 
     public void setItems(Collection<AlarmData> listOfAlarmEvents) {
+        clearItems();
         alarmEventsList.addAll(listOfAlarmEvents);
         notifyDataSetChanged();
     }
@@ -74,8 +75,8 @@ public class AlarmEventsAdapter extends RecyclerView.Adapter<AlarmEventsAdapter.
         }
 
         public void bind(AlarmData alarmData) {
-            eventLocation.setText(alarmData.getLocationOfAlarmEvent());
-            eventTime.setText(alarmData.getTimeOfAlarmEvent());
+//            eventLocation.setText("Alarm event");
+            eventTime.setText(alarmData.getEventtime());
         }
     }
 

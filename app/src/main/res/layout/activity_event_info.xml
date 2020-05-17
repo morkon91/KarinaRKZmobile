@@ -69,7 +69,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Location"
+        android:text=""
         android:paddingStart="16dp"
         android:textSize="18sp"/>
 
@@ -77,11 +77,11 @@
         android:id="@+id/location_event_info_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Teplovizor 1"
+        android:text="Alarm event"
         android:paddingStart="16dp"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorRed"/>
 
     <TextView
         android:layout_width="match_parent"

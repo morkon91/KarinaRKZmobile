@@ -1,25 +1,32 @@
 package com.example.karinarkzmobile.data;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class AlarmData implements Serializable {
 
-    private int alarmEventID;
-    private String timeOfAlarmEvent;
-    private String locationOfAlarmEvent;
-    private String temperature;
+    @SerializedName("eventid")
+    @Expose
+    private int eventid;
+    @SerializedName("eventtime")
+    @Expose
+    private String eventtime;
+    @SerializedName("temp")
+    @Expose
+    private String temp;
+
     private String ordinaryPhotoURL;
     private String temperaturePhotoURL;
 
-    public AlarmData(int alarmEventID, String timeOfAlarmEvent, String locationOfAlarmEvent, String temperature,
-                     String ordinaryPhotoURL, String temperaturePhotoURL) {
-        this.alarmEventID = alarmEventID;
-        this.timeOfAlarmEvent = timeOfAlarmEvent;
-        this.locationOfAlarmEvent = locationOfAlarmEvent;
-        this.temperature = temperature;
-        this.ordinaryPhotoURL = ordinaryPhotoURL;
-        this.temperaturePhotoURL = temperaturePhotoURL;
+    public AlarmData(int alarmEventID, String timeOfAlarmEvent, String temperature) {
+        this.eventid = alarmEventID;
+        this.eventtime = timeOfAlarmEvent;
+        this.temp = temperature;
+        this.ordinaryPhotoURL = "http://127.0.0.1:18001/?command=102&eventid=" + alarmEventID;
+        this.temperaturePhotoURL = "http://127.0.0.1:18001/?command=103&eventid=" + alarmEventID;
     }
 
     @Override
@@ -27,33 +34,28 @@ public class AlarmData implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlarmData alarmData = (AlarmData) o;
-        return alarmEventID == alarmData.alarmEventID &&
-                Objects.equals(timeOfAlarmEvent, alarmData.timeOfAlarmEvent) &&
-                Objects.equals(locationOfAlarmEvent, alarmData.locationOfAlarmEvent) &&
-                Objects.equals(temperature, alarmData.temperature) &&
+        return eventid == alarmData.eventid &&
+                Objects.equals(eventtime, alarmData.eventtime) &&
+                Objects.equals(temp, alarmData.temp) &&
                 Objects.equals(ordinaryPhotoURL, alarmData.ordinaryPhotoURL) &&
                 Objects.equals(temperaturePhotoURL, alarmData.temperaturePhotoURL);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alarmEventID, timeOfAlarmEvent, locationOfAlarmEvent, temperature, ordinaryPhotoURL, temperaturePhotoURL);
+        return Objects.hash(eventid, eventtime, temp, ordinaryPhotoURL, temperaturePhotoURL);
     }
 
-    public void setAlarmEventID(int alarmEventID) {
-        this.alarmEventID = alarmEventID;
+    public void setEventid(int eventid) {
+        this.eventid = eventid;
     }
 
-    public void setTimeOfAlarmEvent(String timeOfAlarmEvent) {
-        this.timeOfAlarmEvent = timeOfAlarmEvent;
+    public void setEventtime(String eventtime) {
+        this.eventtime = eventtime;
     }
 
-    public void setLocationOfAlarmEvent(String locationOfAlarmEvent) {
-        this.locationOfAlarmEvent = locationOfAlarmEvent;
-    }
-
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
+    public void setTemp(String temp) {
+        this.temp = temp;
     }
 
     public void setOrdinaryPhotoURL(String ordinaryPhotoURL) {
@@ -64,20 +66,16 @@ public class AlarmData implements Serializable {
         this.temperaturePhotoURL = temperaturePhotoURL;
     }
 
-    public int getAlarmEventID() {
-        return alarmEventID;
+    public int getEventid() {
+        return eventid;
     }
 
-    public String getTimeOfAlarmEvent() {
-        return timeOfAlarmEvent;
+    public String getEventtime() {
+        return eventtime;
     }
 
-    public String getLocationOfAlarmEvent() {
-        return locationOfAlarmEvent;
-    }
-
-    public String getTemperature() {
-        return temperature;
+    public String getTemp() {
+        return temp;
     }
 
     public String getOrdinaryPhotoURL() {

@@ -3,7 +3,6 @@ package com.example.karinarkzmobile.eventInfoActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -12,7 +11,6 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.data.AlarmData;
@@ -40,6 +38,7 @@ public class EventInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_info);
 
         locationEventInfo = findViewById(R.id.location_event_info_textView);
+
         timeOfAlarmEventInfo = findViewById(R.id.time_of_alarm_event_textView);
         detectedTemperature = findViewById(R.id.detected_temperature_textView);
 
@@ -47,9 +46,8 @@ public class EventInfoActivity extends AppCompatActivity {
         if (arguments != null){
             alarmEvent = (AlarmData) arguments.getSerializable(AlarmEventsFragment.EXT_ALARM_DATA);
         }
-        locationEventInfo.setText(alarmEvent.getLocationOfAlarmEvent());
-        timeOfAlarmEventInfo.setText(alarmEvent.getTimeOfAlarmEvent());
-        detectedTemperature.setText(alarmEvent.getTemperature());
+        timeOfAlarmEventInfo.setText(alarmEvent.getEventtime());
+        detectedTemperature.setText(alarmEvent.getTemp());
 
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
