@@ -24,12 +24,15 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AlarmEventsRepository implements IAlarmEvents.Repository {
+public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEventObserved{
 
     private final String LOG_TAG = "myLogs";
     private List<AlarmData> alarmDataList = new ArrayList<>();
 
     private HashSet<AlarmData> downloadedList = new HashSet<>();
+
+    private List<INewEventObserver> subsribersList = new ArrayList<>();
+
 
 //    private List<AlarmData> alarmDataList = Arrays.asList(
 //            new AlarmData(1,
@@ -45,6 +48,11 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository {
 
     private IEventsListener eventsListener;
 
+    @Override
+    public void setEventsListener(IEventsListener iEventsListener) {
+        this.eventsListener = iEventsListener;
+    }
+
     //    private final String BASE_URL = "http://127.0.0.1:18001";
     private final String BASE_URL = "https://my-json-server.typicode.com";
 
@@ -54,6 +62,8 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository {
             .baseUrl(BASE_URL)
             .build();
     private ServerConnectionAPI serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
+
+
 
     @Override
     public int loadEventCount() {
@@ -71,10 +81,13 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository {
 
                 if (response.isSuccessful()) {
                     Log.d(LOG_TAG, "response.isSuccessful()");
+
                     downloadedList.addAll(response.body().getEvents());
                     Log.d(LOG_TAG, "Скачал новый список, количество элементов: " + response.body().getEvents().size());
+
                     alarmDataList = new ArrayList<>(downloadedList);
                     Log.d(LOG_TAG, "Размер списка для отображения: " + alarmDataList.size());
+
                 } else {
                     Log.d(LOG_TAG, "response NOT Successful");
                 }
@@ -85,19 +98,32 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository {
                 Log.d(LOG_TAG, "onFailure: " + t.getMessage());
             }
         });
-        if (eventsListener != null) {
-            eventsListener.onNewEvent(alarmDataList);
-        }
+
+//        if (eventsListener != null) {
+//            eventsListener.onNewEvent(alarmDataList);
+//        }
     }
 
     @Override
     public List<AlarmData> getAllEvents() {
-
         return alarmDataList;
     }
 
+
     @Override
-    public void setEventsListener(IEventsListener iEventsListener) {
-        this.eventsListener = iEventsListener;
+    public void addNewEventObserver(INewEventObserver observer) {
+        this.subsribersList.add(observer);
+    }
+
+    @Override
+    public void removeNewEventObserver(INewEventObserver observer) {
+        this.subsribersList.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (INewEventObserver observer: subsribersList) {
+            observer.handleEvent(this.alarmDataList);
+        }
     }
 }
