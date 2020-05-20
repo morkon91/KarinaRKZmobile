@@ -1,13 +1,14 @@
 package com.example.karinarkzmobile.mainActivity.alarmEventsFragment;
 
-import com.example.karinarkzmobile.AlarmEventsRepository;
+import com.example.karinarkzmobile.INewEventObserved;
+import com.example.karinarkzmobile.INewEventObserver;
 import com.example.karinarkzmobile.ServiceLocator;
 import com.example.karinarkzmobile.data.AlarmData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlarmEventsPresenter implements IAlarmEvents.Presenter, IAlarmEvents.Repository.IEventsListener {
+public class AlarmEventsPresenter implements IAlarmEvents.Presenter, INewEventObserver{
 
     private IAlarmEvents.View mView;
     private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
@@ -18,7 +19,9 @@ public class AlarmEventsPresenter implements IAlarmEvents.Presenter, IAlarmEvent
 
     public AlarmEventsPresenter(IAlarmEvents.View mView) {
         this.mView = mView;
-        repository.setEventsListener(this);
+        if (repository instanceof INewEventObserved){
+            ((INewEventObserved) repository).addNewEventObserver(this);
+        }
     }
 
 
@@ -30,11 +33,12 @@ public class AlarmEventsPresenter implements IAlarmEvents.Presenter, IAlarmEvent
 
     @Override
     public void removeListener() {
-        repository.setEventsListener(null);
+        if (repository instanceof INewEventObserved) {
+            ((INewEventObserved) repository).removeNewEventObserver(this);}
     }
 
     @Override
-    public void onNewEvent(List<AlarmData> updatedList) {
+    public void handleEvent(List<AlarmData> updatedList, List<AlarmData> newEventList) {
         mView.showAlarmEvents(updatedList);
     }
 }

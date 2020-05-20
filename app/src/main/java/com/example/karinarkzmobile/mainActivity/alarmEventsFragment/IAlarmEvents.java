@@ -24,11 +24,5 @@ public interface IAlarmEvents {
         void loadAlarmEventList();
 
         List<AlarmData> getAllEvents();
-
-        void setEventsListener(IEventsListener iEventsListener);
-
-        interface IEventsListener{
-            void onNewEvent(List<AlarmData> updatedList);
-        }
     }
 }

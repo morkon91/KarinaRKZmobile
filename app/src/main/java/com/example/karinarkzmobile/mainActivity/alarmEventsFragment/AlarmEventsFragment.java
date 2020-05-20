@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.example.karinarkzmobile.ServiceLocator;
 import com.example.karinarkzmobile.eventInfoActivity.EventInfoActivity;
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.adapter.AlarmEventsAdapter;
@@ -26,25 +27,12 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
 
     public static final String EXT_ALARM_DATA = AlarmData.class.getSimpleName();
 
-//    public static AlarmEventsFragment newInstance(AlarmData alarmData) {
-//        AlarmEventsFragment fragment = new AlarmEventsFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable(EXT_ALARM_DATA, alarmData);
-//
-//        return fragment;
-//    }
-//
-//    private AlarmData getAlarmData() {
-//        return (AlarmData) getArguments().getSerializable(EXT_ALARM_DATA);
-//    }
-
     private RecyclerView alarmEventsRecyclerView;
     private AlarmEventsAdapter adapter;
 
     private IAlarmEvents.Presenter mPresenter;
 
-
-
+    private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,5 +86,11 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
     public void onDestroyView() {
         mPresenter.removeListener();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
     }
 }

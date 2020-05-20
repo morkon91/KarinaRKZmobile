@@ -1,8 +1,6 @@
 package com.example.karinarkzmobile;
 
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.karinarkzmobile.connectionUtils.Response;
 import com.example.karinarkzmobile.connectionUtils.ServerConnectionAPI;
@@ -11,10 +9,7 @@ import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.IAlarmEvents
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,13 +23,13 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
     private final String LOG_TAG = "myLogs";
     private List<AlarmData> alarmDataList = new ArrayList<>();
+    private ArrayList<AlarmData> newEvents = new ArrayList<>();
 
-    private HashSet<AlarmData> downloadedList = new HashSet<>();
+    private LinkedHashSet<AlarmData> downloadedList = new LinkedHashSet<>();
 
     private List<INewEventObserver> subsribersList = new ArrayList<>();
 
-
-//    private List<AlarmData> alarmDataList = Arrays.asList(
+    //    private List<AlarmData> alarmDataList = Arrays.asList(
 //            new AlarmData(1,
 //                    "12.12.2020 14:55",
 //                    "38"),
@@ -45,13 +40,6 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 //                    "12.12.2020 14:55",
 //                    "38,2"));
 
-
-    private IEventsListener eventsListener;
-
-    @Override
-    public void setEventsListener(IEventsListener iEventsListener) {
-        this.eventsListener = iEventsListener;
-    }
 
     //    private final String BASE_URL = "http://127.0.0.1:18001";
     private final String BASE_URL = "https://my-json-server.typicode.com";
@@ -85,6 +73,9 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
                     downloadedList.addAll(response.body().getEvents());
                     Log.d(LOG_TAG, "Скачал новый список, количество элементов: " + response.body().getEvents().size());
 
+                    newEvents = new ArrayList<>(downloadedList);
+                    newEvents.removeAll(alarmDataList);
+
                     alarmDataList = new ArrayList<>(downloadedList);
                     Log.d(LOG_TAG, "Размер списка для отображения: " + alarmDataList.size());
 
@@ -99,9 +90,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
             }
         });
 
-//        if (eventsListener != null) {
-//            eventsListener.onNewEvent(alarmDataList);
-//        }
+        notifyObservers();
     }
 
     @Override
@@ -123,7 +112,8 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     @Override
     public void notifyObservers() {
         for (INewEventObserver observer: subsribersList) {
-            observer.handleEvent(this.alarmDataList);
+            observer.handleEvent(this.alarmDataList, this.newEvents);
+            this.newEvents.clear();
         }
     }
 }

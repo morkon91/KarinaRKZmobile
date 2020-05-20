@@ -6,14 +6,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.example.karinarkzmobile.data.AlarmData;
 import com.example.karinarkzmobile.mainActivity.MainActivity;
@@ -24,17 +21,32 @@ import java.util.concurrent.TimeUnit;
 
 import static com.example.karinarkzmobile.App.NOTIFICATION_CHANNEL_ID;
 
-public class EventService extends Service {
+public class EventService extends Service implements INewEventObserver{
 
     private final String LOG_TAG = "My logs";
     private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
 
     Thread thread;
+    Intent notificationIntent;
+    PendingIntent pendingIntent;
+    Intent cancelIntent;
+    PendingIntent cancelPendingIntent;
+
+    public EventService() {
+        if (repository instanceof INewEventObserved){
+            ((INewEventObserved) repository).addNewEventObserver(this);
+        }
+    }
 
     @Override
     public void onCreate() {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate();
+        notificationIntent = new Intent(this, MainActivity.class);
+        pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        cancelIntent = new Intent(this, EventService.class);
+        cancelIntent.setAction("STOP_SERVICE");
+        cancelPendingIntent = PendingIntent.getService(this, 0, cancelIntent, 0);
     }
 
     @Override
@@ -44,14 +56,6 @@ public class EventService extends Service {
             thread.interrupt();
             Log.d(LOG_TAG, "STOP_SERVICE");
         } else {
-            Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-
-            Intent cancelIntent = new Intent(this, EventService.class);
-            cancelIntent.setAction("STOP_SERVICE");
-
-            PendingIntent cancelPendingIntent = PendingIntent.getService(this, 0, cancelIntent, 0);
             Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                     .setContentTitle("New alarm event")
                     .setContentText("Number of events: " + repository.loadEventCount())
@@ -69,7 +73,7 @@ public class EventService extends Service {
                         while (!Thread.currentThread().isInterrupted()) {
                             Log.d(LOG_TAG, "loadAlarmEvent");
                             repository.loadAlarmEventList();
-                            TimeUnit.SECONDS.sleep(2);
+                            TimeUnit.SECONDS.sleep(3);
                         }
                         Log.d(LOG_TAG, "STOP THREAD");
                         stopForeground(true);
@@ -81,29 +85,7 @@ public class EventService extends Service {
                     }
                 }
             });
-
             thread.start();
-
-
-//            repository.setEventsListener(new IAlarmEvents.Repository.IEventsListener() {
-//                @Override
-//                public void onNewEvent(List<AlarmData> updatedList) {
-//                    Notification notification = new NotificationCompat.Builder(EventService.this, NOTIFICATION_CHANNEL_ID)
-//                            .setContentTitle("New alarm event")
-//                            .setContentText("Number of events: " + updatedList.size())
-//                            .setTicker("setTicker")
-//                            .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                            .setContentIntent(pendingIntent)
-//                            .setWhen(System.currentTimeMillis())
-//                            .addAction(0, "Cancel service", cancelPendingIntent)
-//                            .build();
-//
-//                    NotificationManager manager = (NotificationManager) EventService.this.getSystemService(Context.NOTIFICATION_SERVICE);
-//                    manager.notify(1, notification);
-//                }
-//            });
-
-
         }
 
         return START_NOT_STICKY;
@@ -119,5 +101,26 @@ public class EventService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void handleEvent(List<AlarmData> updatedList, List<AlarmData> newEventList) {
+
+        if (newEventList.size() > 0){
+            Notification notification = new NotificationCompat.Builder(EventService.this, NOTIFICATION_CHANNEL_ID)
+                    .setContentTitle("number of new events: " + newEventList.size())
+                    .setContentText("Number of events: " + updatedList.size())
+                    .setTicker("setTicker")
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentIntent(pendingIntent)
+                    .setWhen(System.currentTimeMillis())
+                    .addAction(0, "Cancel service", cancelPendingIntent)
+                    .build();
+
+            NotificationManager manager = (NotificationManager) EventService.this.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify(1, notification);
+
+
+        }
     }
 }
