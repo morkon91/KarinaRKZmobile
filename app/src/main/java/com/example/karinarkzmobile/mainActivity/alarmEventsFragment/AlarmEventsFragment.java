@@ -23,7 +23,7 @@ import com.example.karinarkzmobile.data.AlarmData;
 import java.util.List;
 
 
-public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
+public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
 
     public static final String EXT_ALARM_DATA = AlarmData.class.getSimpleName();
 
@@ -90,7 +90,7 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View{
 
     @Override
     public void onResume() {
-
+        mPresenter.setEventsSeenList();
         super.onResume();
     }
 }

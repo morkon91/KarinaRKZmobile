@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -23,22 +22,13 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
     private final String LOG_TAG = "myLogs";
     private List<AlarmData> alarmDataList = new ArrayList<>();
-    private ArrayList<AlarmData> newEvents = new ArrayList<>();
+    private List<AlarmData> newEvents = new ArrayList<>();
+    private List<AlarmData> eventsSeenList;
 
     private LinkedHashSet<AlarmData> downloadedList = new LinkedHashSet<>();
 
     private List<INewEventObserver> subsribersList = new ArrayList<>();
 
-    //    private List<AlarmData> alarmDataList = Arrays.asList(
-//            new AlarmData(1,
-//                    "12.12.2020 14:55",
-//                    "38"),
-//            new AlarmData(2,
-//                    "12.12.2020 14:55",
-//                    "37,5"),
-//            new AlarmData(3,
-//                    "12.12.2020 14:55",
-//                    "38,2"));
 
 
     //    private final String BASE_URL = "http://127.0.0.1:18001";
@@ -73,11 +63,15 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
                     downloadedList.addAll(response.body().getEvents());
                     Log.d(LOG_TAG, "Скачал новый список, количество элементов: " + response.body().getEvents().size());
 
-                    newEvents = new ArrayList<>(downloadedList);
-                    newEvents.removeAll(alarmDataList);
+//                    newEvents = new ArrayList<>(downloadedList);
+//                    newEvents.removeAll(alarmDataList);
 
                     alarmDataList = new ArrayList<>(downloadedList);
                     Log.d(LOG_TAG, "Размер списка для отображения: " + alarmDataList.size());
+                    newEvents = createNewElementList(eventsSeenList, alarmDataList);
+                    Log.d(LOG_TAG, "Количество новых элементов: " + newEvents.size());
+                    Log.d(LOG_TAG, "==========================================");
+
 
                 } else {
                     Log.d(LOG_TAG, "response NOT Successful");
@@ -93,9 +87,32 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
         notifyObservers();
     }
 
+    private List<AlarmData> createNewElementList(List<AlarmData> eventsSeenList, List<AlarmData> alarmDataList) {
+        List<AlarmData> list = new ArrayList<>(alarmDataList);
+        if (eventsSeenList != null)
+            list.removeAll(eventsSeenList);
+
+        return list;
+    }
+
     @Override
     public List<AlarmData> getAllEvents() {
         return alarmDataList;
+    }
+
+    @Override
+    public void setEventsSeenList() {
+        List<AlarmData> list = new ArrayList<>();
+        list.addAll(alarmDataList);
+        eventsSeenList = list;
+        newEvents = createNewElementList(eventsSeenList, alarmDataList);
+        notifyObservers();
+        Log.d(LOG_TAG,
+                "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        Log.d(LOG_TAG,
+                "Отработал метод setEventsSeenList, количество увиденных эелементов: " + eventsSeenList.size());
+        Log.d(LOG_TAG,
+                "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
 
@@ -113,7 +130,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     public void notifyObservers() {
         for (INewEventObserver observer: subsribersList) {
             observer.handleEvent(this.alarmDataList, this.newEvents);
-            this.newEvents.clear();
+
         }
     }
 }

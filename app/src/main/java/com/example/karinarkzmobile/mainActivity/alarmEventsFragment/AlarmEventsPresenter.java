@@ -38,6 +38,11 @@ public class AlarmEventsPresenter implements IAlarmEvents.Presenter, INewEventOb
     }
 
     @Override
+    public void setEventsSeenList() {
+        repository.setEventsSeenList();
+    }
+
+    @Override
     public void handleEvent(List<AlarmData> updatedList, List<AlarmData> newEventList) {
         mView.showAlarmEvents(updatedList);
     }

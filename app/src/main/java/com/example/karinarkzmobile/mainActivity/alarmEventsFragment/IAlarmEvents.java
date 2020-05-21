@@ -14,15 +14,17 @@ public interface IAlarmEvents {
     interface Presenter{
         void getAlarmEvents();
         void removeListener();
+        void setEventsSeenList();
 
     }
 
     interface Repository{
 
         int loadEventCount();
-
         void loadAlarmEventList();
-
         List<AlarmData> getAllEvents();
+        void setEventsSeenList();
+
+
     }
 }

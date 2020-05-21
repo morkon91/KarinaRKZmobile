@@ -4,11 +4,11 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 
 public class App extends Application {
 
-    public static final String NOTIFICATION_CHANNEL_ID = "serviceChannel";
+    public static final String NOTIFICATION_HIDE_CHANNEL_ID = "hide";
+    public static final String NOTIFICATION_DEFAULT_CHANNEL_ID = "default";
 
     @Override
     public void onCreate() {
@@ -21,15 +21,21 @@ public class App extends Application {
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel serviceChannel = new NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID,
-                    "Service channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
-            );
 
+        NotificationChannel chan1 = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            chan1 = new NotificationChannel(NOTIFICATION_HIDE_CHANNEL_ID, NOTIFICATION_HIDE_CHANNEL_ID,
+                    NotificationManager.IMPORTANCE_LOW); // без звука
             NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(serviceChannel);
+            manager.createNotificationChannel(chan1);
+        }
+
+        NotificationChannel chan2 = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            chan2 = new NotificationChannel(NOTIFICATION_DEFAULT_CHANNEL_ID, NOTIFICATION_DEFAULT_CHANNEL_ID,
+                    NotificationManager.IMPORTANCE_HIGH); // обычный звук
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(chan2);
         }
     }
 }

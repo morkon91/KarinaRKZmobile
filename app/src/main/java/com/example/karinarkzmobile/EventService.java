@@ -19,21 +19,24 @@ import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.IAlarmEvents
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.karinarkzmobile.App.NOTIFICATION_CHANNEL_ID;
+import static com.example.karinarkzmobile.App.NOTIFICATION_HIDE_CHANNEL_ID;
+import static com.example.karinarkzmobile.App.NOTIFICATION_DEFAULT_CHANNEL_ID;
 
-public class EventService extends Service implements INewEventObserver{
+public class EventService extends Service implements INewEventObserver {
 
     private final String LOG_TAG = "My logs";
     private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
+
 
     Thread thread;
     Intent notificationIntent;
     PendingIntent pendingIntent;
     Intent cancelIntent;
     PendingIntent cancelPendingIntent;
+    int newEventList;
 
     public EventService() {
-        if (repository instanceof INewEventObserved){
+        if (repository instanceof INewEventObserved) {
             ((INewEventObserved) repository).addNewEventObserver(this);
         }
     }
@@ -56,9 +59,9 @@ public class EventService extends Service implements INewEventObserver{
             thread.interrupt();
             Log.d(LOG_TAG, "STOP_SERVICE");
         } else {
-            Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                    .setContentTitle("New alarm event")
-                    .setContentText("Number of events: " + repository.loadEventCount())
+            Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_HIDE_CHANNEL_ID)
+                    .setContentTitle("Karina.R.KZ.mobile starting")
+                    .setContentText("Receiving data from the server...")
                     .setTicker("setTicker")
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setContentIntent(pendingIntent)
@@ -106,21 +109,49 @@ public class EventService extends Service implements INewEventObserver{
     @Override
     public void handleEvent(List<AlarmData> updatedList, List<AlarmData> newEventList) {
 
-        if (newEventList.size() > 0){
-            Notification notification = new NotificationCompat.Builder(EventService.this, NOTIFICATION_CHANNEL_ID)
-                    .setContentTitle("number of new events: " + newEventList.size())
-                    .setContentText("Number of events: " + updatedList.size())
-                    .setTicker("setTicker")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentIntent(pendingIntent)
-                    .setWhen(System.currentTimeMillis())
-                    .addAction(0, "Cancel service", cancelPendingIntent)
-                    .build();
-
-            NotificationManager manager = (NotificationManager) EventService.this.getSystemService(Context.NOTIFICATION_SERVICE);
-            manager.notify(1, notification);
-
-
+        if (this.newEventList != newEventList.size()){
+            if (newEventList.size() > 0) {
+                showNotification(updatedList.size(), newEventList.size(), NOTIFICATION_DEFAULT_CHANNEL_ID);
+            } else {
+                showNotification(updatedList.size(), newEventList.size(), NOTIFICATION_HIDE_CHANNEL_ID);
+            }
+            this.newEventList = newEventList.size();
         }
+
+
+
+
+//        if (newEventList.size() > 0){
+//            Notification notification = new NotificationCompat.Builder(EventService.this, NOTIFICATION_CHANNEL_ID)
+//                    .setContentTitle("number of new events: " + newEventList.size())
+//                    .setContentText("Number of events: " + updatedList.size())
+//                    .setTicker("setTicker")
+//                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                    .setContentIntent(pendingIntent)
+//                    .setWhen(System.currentTimeMillis())
+//                    .addAction(0, "Cancel service", cancelPendingIntent)
+//                    .build();
+//
+//            NotificationManager manager = (NotificationManager) EventService.this.getSystemService(Context.NOTIFICATION_SERVICE);
+//            manager.notify(1, notification);
+//        }
+    }
+
+    private void showNotification(int updatedListSize, int newEventListSize, String notificationDefaultChannelId) {
+        Notification notification = new NotificationCompat.Builder(EventService.this, notificationDefaultChannelId)
+                .setContentTitle("Number of new events: " + newEventListSize)
+                .setContentText("Number of events: " + updatedListSize)
+                .setTicker("setTicker")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentIntent(pendingIntent)
+                .setWhen(System.currentTimeMillis())
+                .addAction(0, "Cancel service", cancelPendingIntent)
+                .build();
+
+        NotificationManager manager = (NotificationManager) EventService.this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, notification);
     }
 }
+
+
+
