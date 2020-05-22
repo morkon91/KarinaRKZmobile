@@ -27,13 +27,17 @@ public class EventService extends Service implements INewEventObserver {
     private final String LOG_TAG = "My logs";
     private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
 
+    private static Thread thread;
+    private Intent notificationIntent;
+    private PendingIntent pendingIntent;
+    private Intent cancelIntent;
+    private PendingIntent cancelPendingIntent;
+    private int newEventList;
+    private boolean isServiceWork;
 
-    Thread thread;
-    Intent notificationIntent;
-    PendingIntent pendingIntent;
-    Intent cancelIntent;
-    PendingIntent cancelPendingIntent;
-    int newEventList;
+    public static Thread getThread() {
+        return thread;
+    }
 
     public EventService() {
         if (repository instanceof INewEventObserved) {
@@ -43,6 +47,7 @@ public class EventService extends Service implements INewEventObserver {
 
     @Override
     public void onCreate() {
+        isServiceWork = true;
         Log.d(LOG_TAG, "onCreate");
         super.onCreate();
         notificationIntent = new Intent(this, MainActivity.class);
@@ -96,7 +101,9 @@ public class EventService extends Service implements INewEventObserver {
 
     @Override
     public void onDestroy() {
+        isServiceWork = false;
         Log.d(LOG_TAG, "onDestroy");
+
         super.onDestroy();
     }
 
@@ -109,7 +116,7 @@ public class EventService extends Service implements INewEventObserver {
     @Override
     public void handleEvent(List<AlarmData> updatedList, List<AlarmData> newEventList) {
 
-        if (this.newEventList != newEventList.size()){
+        if (this.newEventList != newEventList.size() && isServiceWork) {
             if (newEventList.size() > 0) {
                 showNotification(updatedList.size(), newEventList.size(), NOTIFICATION_DEFAULT_CHANNEL_ID);
             } else {
@@ -117,8 +124,6 @@ public class EventService extends Service implements INewEventObserver {
             }
             this.newEventList = newEventList.size();
         }
-
-
 
 
 //        if (newEventList.size() > 0){
@@ -145,7 +150,8 @@ public class EventService extends Service implements INewEventObserver {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
-                .addAction(0, "Cancel service", cancelPendingIntent)
+                .addAction(0, "Disconnect from server", cancelPendingIntent)
+
                 .build();
 
         NotificationManager manager = (NotificationManager) EventService.this.getSystemService(Context.NOTIFICATION_SERVICE);

@@ -18,6 +18,10 @@ import com.bumptech.glide.Glide;
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.data.AlarmData;
 import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.AlarmEventsFragment;
+import com.stfalcon.frescoimageviewer.ImageViewer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,10 +47,17 @@ public class OrdinaryPhotoFragment extends Fragment {
                 .load(alarmEvent.getOrdinaryPhotoURL())
                 .into(ordinaryImageView);
 
+
         ordinaryImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Go to ordinary photo activity", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Go to ordinary photo activity", Toast.LENGTH_SHORT).show();
+                List<String> list = new ArrayList<>();
+                list.add(alarmEvent.getOrdinaryPhotoURL());
+                new ImageViewer.Builder(getContext(), list)
+                        .hideStatusBar(false)
+                        .setStartPosition(0)
+                        .show();
             }
         });
         super.onViewCreated(view, savedInstanceState);

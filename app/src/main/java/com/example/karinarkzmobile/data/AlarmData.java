@@ -18,7 +18,9 @@ public class AlarmData implements Serializable {
     @Expose
     private String temp;
 
+
     private String ordinaryPhotoURL;
+
     private String temperaturePhotoURL;
 
     public AlarmData(int alarmEventID, String timeOfAlarmEvent, String temperature) {
@@ -27,6 +29,8 @@ public class AlarmData implements Serializable {
         this.temp = temperature;
         this.ordinaryPhotoURL = "http://127.0.0.1:18001/?command=102&eventid=" + alarmEventID;
         this.temperaturePhotoURL = "http://127.0.0.1:18001/?command=103&eventid=" + alarmEventID;
+//        this.ordinaryPhotoURL = "http://www.catalog-vaz.ru/images/wlp/125628-1024x768.jpg";
+//        this.temperaturePhotoURL = "https://wpapers.ru/wallpapers/Holidays/New-Year/5536/PREV_Новый-год.jpg";
     }
 
     @Override

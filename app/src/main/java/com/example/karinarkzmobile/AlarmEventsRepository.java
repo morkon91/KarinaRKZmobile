@@ -18,7 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEventObserved{
+public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEventObserved {
 
     private final String LOG_TAG = "myLogs";
     private List<AlarmData> alarmDataList = new ArrayList<>();
@@ -30,7 +30,6 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     private List<INewEventObserver> subsribersList = new ArrayList<>();
 
 
-
     //    private final String BASE_URL = "http://127.0.0.1:18001";
     private final String BASE_URL = "https://my-json-server.typicode.com";
 
@@ -40,7 +39,6 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
             .baseUrl(BASE_URL)
             .build();
     private ServerConnectionAPI serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
-
 
 
     @Override
@@ -61,6 +59,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
                     Log.d(LOG_TAG, "response.isSuccessful()");
 
                     downloadedList.addAll(response.body().getEvents());
+
                     Log.d(LOG_TAG, "Скачал новый список, количество элементов: " + response.body().getEvents().size());
 
 //                    newEvents = new ArrayList<>(downloadedList);
@@ -68,6 +67,12 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
                     alarmDataList = new ArrayList<>(downloadedList);
                     Log.d(LOG_TAG, "Размер списка для отображения: " + alarmDataList.size());
+                    for (int i = 0; i < alarmDataList.size(); i++) {
+                        Log.d(LOG_TAG,
+                                "обычная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getOrdinaryPhotoURL());
+                        Log.d(LOG_TAG,
+                                "температурная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getTemperaturePhotoURL());
+                    }
                     newEvents = createNewElementList(eventsSeenList, alarmDataList);
                     Log.d(LOG_TAG, "Количество новых элементов: " + newEvents.size());
                     Log.d(LOG_TAG, "==========================================");
@@ -128,7 +133,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
     @Override
     public void notifyObservers() {
-        for (INewEventObserver observer: subsribersList) {
+        for (INewEventObserver observer : subsribersList) {
             observer.handleEvent(this.alarmDataList, this.newEvents);
 
         }

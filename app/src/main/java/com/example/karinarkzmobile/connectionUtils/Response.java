@@ -15,6 +15,13 @@ public class Response {
     private List<AlarmData> events = null;
 
     public List<AlarmData> getEvents() {
+        for (int i = 0; i < events.size(); i++) {
+//            events.get(i).setOrdinaryPhotoURL("http://127.0.0.1:18001/?command=102&eventid=" + events.get(i).getEventid());
+//            events.get(i).setTemperaturePhotoURL("http://127.0.0.1:18001/?command=103&eventid=" + events.get(i).getEventid());
+
+            events.get(i).setOrdinaryPhotoURL("https://images.wallpaperscraft.ru/image/bmw_fary_avtomobil_124112_1024x768.jpg");
+            events.get(i).setTemperaturePhotoURL("https://wpapers.ru/wallpapers/Holidays/New-Year/5536/PREV_Новый-год.jpg");
+        }
         return events;
     }
 

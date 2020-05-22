@@ -49,6 +49,8 @@ public class EventInfoActivity extends AppCompatActivity {
         timeOfAlarmEventInfo.setText(alarmEvent.getEventtime());
         detectedTemperature.setText(alarmEvent.getTemp());
 
+        locationEventInfo.setText("Alert event information:");
+
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
 
