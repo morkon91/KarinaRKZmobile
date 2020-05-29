@@ -16,10 +16,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         ServiceLocator.init();
-        startService(new Intent(this, EventService.class));
 
         createNotificationChannel();
-
+        startService(new Intent(this, EventService.class));
         Fresco.initialize(this);
 
     }

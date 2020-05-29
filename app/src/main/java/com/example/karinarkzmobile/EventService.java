@@ -50,7 +50,7 @@ public class EventService extends Service implements INewEventObserver {
         isServiceWork = true;
         Log.d(LOG_TAG, "onCreate");
         super.onCreate();
-        notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent = new Intent(this, SplashActivity.class);
         pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         cancelIntent = new Intent(this, EventService.class);
         cancelIntent.setAction("STOP_SERVICE");

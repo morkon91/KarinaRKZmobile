@@ -1,14 +1,13 @@
-package com.example.karinarkzmobile.mainActivity.alarmEventsFragment;
+package com.example.karinarkzmobile.mainActivity.settingsFragment;
 
 import com.example.karinarkzmobile.data.AlarmData;
 
-import java.util.Collection;
 import java.util.List;
 
-public interface IAlarmEvents {
+public interface ISettings {
 
     interface View{
-        void showAlarmEvents(List<AlarmData> alarmData);
+        void showConnectStatus(boolean connectStatus);
     }
 
     interface Presenter{
@@ -24,6 +23,7 @@ public interface IAlarmEvents {
         void loadAlarmEventList();
         List<AlarmData> getAllEvents();
         void setEventsSeenList();
-        void setUrl(String ip);
+
+
     }
 }

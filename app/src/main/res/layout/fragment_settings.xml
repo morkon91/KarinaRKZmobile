@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mainActivity.SettingsFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".mainActivity.settingsFragment.SettingsFragment"
     android:gravity="center"
     android:orientation="vertical"
     android:background="@color/colorAccent">
@@ -12,6 +13,48 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings" />
+        android:text="Settings"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="16dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:hint="Enter IP address"
+        android:textColorHint="@color/colorPrimaryDark"
+        app:boxStrokeColor="@color/colorPrimaryDark">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ip_address_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="number|numberDecimal"
+            android:digits="0123456789."/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirm_add_ip_button"
+        android:layout_marginTop="16dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Confirm IP address"
+        app:cornerRadius="8dp"
+        app:icon="@drawable/ic_check_white_24dp"
+        app:iconGravity="textStart"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/close_application_button"
+        android:layout_marginTop="16dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Сlose application"
+        app:cornerRadius="8dp"
+        app:iconGravity="textStart" />
 
 </LinearLayout>

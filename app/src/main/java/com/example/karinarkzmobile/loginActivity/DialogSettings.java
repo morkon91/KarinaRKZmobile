@@ -1,0 +1,72 @@
+package com.example.karinarkzmobile.loginActivity;
+
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
+import com.example.karinarkzmobile.R;
+import com.example.karinarkzmobile.ServiceLocator;
+import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.IAlarmEvents;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+public class DialogSettings extends DialogFragment implements View.OnClickListener{
+
+    private TextInputEditText addIPAddressTextInput;
+    private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
+    private TextView infoAboutIPTextView;
+    private ImageView imageViewDialogTitle;
+
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        View view = inflater.inflate(R.layout.dialog_add_ip_address, null);
+
+        view.findViewById(R.id.confirm_ip_button_dialogLoginActivity).setOnClickListener(this::onClick);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        addIPAddressTextInput = view.findViewById(R.id.ip_address_editText);
+        infoAboutIPTextView = view.findViewById(R.id.info_about_ip_dialog_login);
+        infoAboutIPTextView.setText("");
+        imageViewDialogTitle = view.findViewById(R.id.imageView_dialog_title);
+        imageViewDialogTitle.setColorFilter(getResources().getColor(R.color.colorAccent));
+
+
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+                case (R.id.confirm_ip_button_dialogLoginActivity):
+                    if (!addIPAddressTextInput.getText().toString().isEmpty()){
+                    repository.setUrl(addIPAddressTextInput.getText().toString());
+                    infoAboutIPTextView.setText("IP address saved");
+                    } else {
+                        infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
+                        infoAboutIPTextView.setText("Please, enter IP address");
+                    }
+                    break;
+        }
+
+    }
+}

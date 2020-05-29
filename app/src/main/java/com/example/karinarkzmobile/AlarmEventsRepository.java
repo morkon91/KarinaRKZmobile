@@ -27,16 +27,20 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
     private LinkedHashSet<AlarmData> downloadedList = new LinkedHashSet<>();
 
-    private List<INewEventObserver> subsribersList = new ArrayList<>();
+    private List<INewEventObserver> subscribersList = new ArrayList<>();
+
+
 
 
     //    private final String BASE_URL = "http://127.0.0.1:18001";
-    private final String BASE_URL = "https://my-json-server.typicode.com";
+//    private String baseUrl = "https://my-json-server.typicode.com";
+    private String baseUrl = "https://my-json-server.typicode.ru";
+
 
     private Gson gson = new GsonBuilder().create();
     private Retrofit retrofit = new Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl)
             .build();
     private ServerConnectionAPI serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
 
@@ -61,9 +65,6 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
                     downloadedList.addAll(response.body().getEvents());
 
                     Log.d(LOG_TAG, "Скачал новый список, количество элементов: " + response.body().getEvents().size());
-
-//                    newEvents = new ArrayList<>(downloadedList);
-//                    newEvents.removeAll(alarmDataList);
 
                     alarmDataList = new ArrayList<>(downloadedList);
                     Log.d(LOG_TAG, "Размер списка для отображения: " + alarmDataList.size());
@@ -120,20 +121,31 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
                 "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
+    @Override
+    public void setUrl(String ip) {
+        this.baseUrl = "https://my-json-server.typicode." + ip;
+        retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl(baseUrl)
+                .build();
+         serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
+         loadAlarmEventList();
+    }
+
 
     @Override
     public void addNewEventObserver(INewEventObserver observer) {
-        this.subsribersList.add(observer);
+        this.subscribersList.add(observer);
     }
 
     @Override
     public void removeNewEventObserver(INewEventObserver observer) {
-        this.subsribersList.remove(observer);
+        this.subscribersList.remove(observer);
     }
 
     @Override
     public void notifyObservers() {
-        for (INewEventObserver observer : subsribersList) {
+        for (INewEventObserver observer : subscribersList) {
             observer.handleEvent(this.alarmDataList, this.newEvents);
 
         }

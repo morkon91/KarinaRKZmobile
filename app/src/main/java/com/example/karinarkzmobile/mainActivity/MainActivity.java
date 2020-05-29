@@ -13,6 +13,7 @@ import android.view.View;
 import com.example.karinarkzmobile.EventService;
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.AlarmEventsFragment;
+import com.example.karinarkzmobile.mainActivity.settingsFragment.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
