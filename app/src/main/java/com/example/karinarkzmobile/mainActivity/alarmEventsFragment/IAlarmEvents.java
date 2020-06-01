@@ -24,6 +24,6 @@ public interface IAlarmEvents {
         void loadAlarmEventList();
         List<AlarmData> getAllEvents();
         void setEventsSeenList();
-        void setUrl(String ip);
+        void updateUrl();
     }
 }

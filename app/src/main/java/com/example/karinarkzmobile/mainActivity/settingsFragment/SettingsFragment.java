@@ -1,5 +1,6 @@
 package com.example.karinarkzmobile.mainActivity.settingsFragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,13 +28,8 @@ import com.google.android.material.textfield.TextInputEditText;
  */
 public class SettingsFragment extends Fragment {
 
-    TextInputEditText ipAddresseditText;
+    TextInputEditText ipAddressEditText;
     Button closeApplicationButton;
-
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +41,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        ipAddresseditText = view.findViewById(R.id.ip_address_editText);
+        ipAddressEditText = view.findViewById(R.id.ip_address_editText);
         closeApplicationButton = view.findViewById(R.id.close_application_button);
         closeApplicationButton.setBackgroundColor(getResources().getColor(R.color.colorRed));
 

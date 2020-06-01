@@ -13,14 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.example.karinarkzmobile.data.AlarmData;
-import com.example.karinarkzmobile.mainActivity.MainActivity;
 import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.IAlarmEvents;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.karinarkzmobile.App.NOTIFICATION_HIDE_CHANNEL_ID;
 import static com.example.karinarkzmobile.App.NOTIFICATION_DEFAULT_CHANNEL_ID;
+import static com.example.karinarkzmobile.App.NOTIFICATION_HIDE_CHANNEL_ID;
 
 public class EventService extends Service implements INewEventObserver {
 
@@ -124,22 +123,6 @@ public class EventService extends Service implements INewEventObserver {
             }
             this.newEventList = newEventList.size();
         }
-
-
-//        if (newEventList.size() > 0){
-//            Notification notification = new NotificationCompat.Builder(EventService.this, NOTIFICATION_CHANNEL_ID)
-//                    .setContentTitle("number of new events: " + newEventList.size())
-//                    .setContentText("Number of events: " + updatedList.size())
-//                    .setTicker("setTicker")
-//                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                    .setContentIntent(pendingIntent)
-//                    .setWhen(System.currentTimeMillis())
-//                    .addAction(0, "Cancel service", cancelPendingIntent)
-//                    .build();
-//
-//            NotificationManager manager = (NotificationManager) EventService.this.getSystemService(Context.NOTIFICATION_SERVICE);
-//            manager.notify(1, notification);
-//        }
     }
 
     private void showNotification(int updatedListSize, int newEventListSize, String notificationDefaultChannelId) {

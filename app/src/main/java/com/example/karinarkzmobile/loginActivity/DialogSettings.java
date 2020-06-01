@@ -13,19 +13,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.karinarkzmobile.ISharedPreferences;
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.ServiceLocator;
-import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.IAlarmEvents;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
-public class DialogSettings extends DialogFragment implements View.OnClickListener{
+public class DialogSettings extends DialogFragment implements View.OnClickListener {
 
     private TextInputEditText addIPAddressTextInput;
-    private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
+    private ISharedPreferences authRepository = ServiceLocator.getAuthRepository();
     private TextView infoAboutIPTextView;
     private ImageView imageViewDialogTitle;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -44,11 +47,13 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         addIPAddressTextInput = view.findViewById(R.id.ip_address_editText);
+        addIPAddressTextInput.setText(authRepository.loadIP());
+
         infoAboutIPTextView = view.findViewById(R.id.info_about_ip_dialog_login);
         infoAboutIPTextView.setText("");
+
         imageViewDialogTitle = view.findViewById(R.id.imageView_dialog_title);
         imageViewDialogTitle.setColorFilter(getResources().getColor(R.color.colorAccent));
-
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -56,17 +61,23 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
-                case (R.id.confirm_ip_button_dialogLoginActivity):
-                    if (!addIPAddressTextInput.getText().toString().isEmpty()){
-                    repository.setUrl(addIPAddressTextInput.getText().toString());
-                    infoAboutIPTextView.setText("IP address saved");
-                    } else {
-                        infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
-                        infoAboutIPTextView.setText("Please, enter IP address");
-                    }
-                    break;
+        switch (v.getId()) {
+            case (R.id.confirm_ip_button_dialogLoginActivity):
+                if (!addIPAddressTextInput.getText().toString().isEmpty()) {
+                    authRepository.saveIP(addIPAddressTextInput.getText().toString());
+                    infoAboutIPTextView.setText("IP address " + authRepository.loadIP() + " saved");
+                    dismiss();
+                } else {
+                    infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
+                    infoAboutIPTextView.setText("Please, enter IP address");
+                }
+                break;
         }
+    }
 
+    @Override
+    public void onDestroy() {
+
+        super.onDestroy();
     }
 }

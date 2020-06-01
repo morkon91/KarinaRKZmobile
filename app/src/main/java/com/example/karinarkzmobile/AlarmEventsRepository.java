@@ -1,5 +1,6 @@
 package com.example.karinarkzmobile;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.karinarkzmobile.connectionUtils.Response;
@@ -29,12 +30,11 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
     private List<INewEventObserver> subscribersList = new ArrayList<>();
 
-
-
+    private ISharedPreferences authRepository = ServiceLocator.getAuthRepository();
 
     //    private final String BASE_URL = "http://127.0.0.1:18001";
 //    private String baseUrl = "https://my-json-server.typicode.com";
-    private String baseUrl = "https://my-json-server.typicode.ru";
+    private String baseUrl = "https://my-json-server.typicode.";
 
 
     private Gson gson = new GsonBuilder().create();
@@ -43,7 +43,6 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
             .baseUrl(baseUrl)
             .build();
     private ServerConnectionAPI serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
-
 
     @Override
     public int loadEventCount() {
@@ -122,16 +121,14 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     }
 
     @Override
-    public void setUrl(String ip) {
-        this.baseUrl = "https://my-json-server.typicode." + ip;
+    public void updateUrl() {
+        this.baseUrl = "https://my-json-server.typicode." + authRepository.loadIP();
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseUrl)
                 .build();
-         serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
-         loadAlarmEventList();
+        serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
     }
-
 
     @Override
     public void addNewEventObserver(INewEventObserver observer) {
@@ -150,4 +147,5 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
         }
     }
+
 }

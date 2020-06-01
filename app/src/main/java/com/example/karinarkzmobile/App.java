@@ -4,6 +4,8 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -11,6 +13,11 @@ public class App extends Application {
 
     public static final String NOTIFICATION_HIDE_CHANNEL_ID = "hide";
     public static final String NOTIFICATION_DEFAULT_CHANNEL_ID = "default";
+    private static SharedPreferences sharedPreferences;
+
+    public static SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
 
     @Override
     public void onCreate() {
@@ -18,8 +25,10 @@ public class App extends Application {
         ServiceLocator.init();
 
         createNotificationChannel();
-        startService(new Intent(this, EventService.class));
+//        startService(new Intent(this, EventService.class));
         Fresco.initialize(this);
+
+        sharedPreferences = getSharedPreferences("app_settings", MODE_PRIVATE);
 
     }
 
