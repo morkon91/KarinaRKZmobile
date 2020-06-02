@@ -67,7 +67,7 @@ public class EventService extends Service implements INewEventObserver {
                     .setContentTitle("Karina.R.KZ.mobile starting")
                     .setContentText("Receiving data from the server...")
                     .setTicker("setTicker")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setSmallIcon(R.drawable.ic_warning_black_24dp)
                     .setContentIntent(pendingIntent)
                     .setWhen(System.currentTimeMillis())
                     .build();
@@ -78,7 +78,7 @@ public class EventService extends Service implements INewEventObserver {
                 public void run() {
                     try {
                         while (!Thread.currentThread().isInterrupted()) {
-                            Log.d(LOG_TAG, "loadAlarmEvent");
+                            Log.d(LOG_TAG, "loadAlarmEvent in Service");
                             repository.loadAlarmEventList();
                             TimeUnit.SECONDS.sleep(3);
                         }
@@ -123,6 +123,11 @@ public class EventService extends Service implements INewEventObserver {
             }
             this.newEventList = newEventList.size();
         }
+    }
+
+    @Override
+    public void handleDisconnect(String message) {
+
     }
 
     private void showNotification(int updatedListSize, int newEventListSize, String notificationDefaultChannelId) {

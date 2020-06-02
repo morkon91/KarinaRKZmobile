@@ -10,7 +10,7 @@ public class AlarmData implements Serializable {
 
     @SerializedName("eventid")
     @Expose
-    private int eventid;
+    private String eventid;
     @SerializedName("eventtime")
     @Expose
     private String eventtime;
@@ -23,7 +23,7 @@ public class AlarmData implements Serializable {
 
     private String temperaturePhotoURL;
 
-    public AlarmData(int alarmEventID, String timeOfAlarmEvent, String temperature) {
+    public AlarmData(String alarmEventID, String timeOfAlarmEvent, String temperature) {
         this.eventid = alarmEventID;
         this.eventtime = timeOfAlarmEvent;
         this.temp = temperature;
@@ -38,7 +38,7 @@ public class AlarmData implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlarmData alarmData = (AlarmData) o;
-        return eventid == alarmData.eventid &&
+        return eventid.equals(alarmData.eventid) &&
                 Objects.equals(eventtime, alarmData.eventtime) &&
                 Objects.equals(temp, alarmData.temp) &&
                 Objects.equals(ordinaryPhotoURL, alarmData.ordinaryPhotoURL) &&
@@ -50,7 +50,7 @@ public class AlarmData implements Serializable {
         return Objects.hash(eventid, eventtime, temp, ordinaryPhotoURL, temperaturePhotoURL);
     }
 
-    public void setEventid(int eventid) {
+    public void setEventid(String eventid) {
         this.eventid = eventid;
     }
 
@@ -70,7 +70,7 @@ public class AlarmData implements Serializable {
         this.temperaturePhotoURL = temperaturePhotoURL;
     }
 
-    public int getEventid() {
+    public String getEventid() {
         return eventid;
     }
 

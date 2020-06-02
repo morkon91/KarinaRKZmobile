@@ -46,25 +46,24 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ip_address_editText"
             android:layout_width="match_parent"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
+            android:digits="0123456789."
+            android:inputType="number|numberDecimal"
             android:maxLines="1" />
-        <!--            android:inputType="number|numberDecimal"-->
-        <!--            android:digits="0123456789."-->
-
-        />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/info_about_ip_dialog_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="Info about IP address"
         android:textSize="16sp"
-        android:layout_marginTop="8dp"
-        android:textStyle="normal"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+        android:textStyle="normal" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm_ip_button_dialogLoginActivity"
@@ -81,12 +80,12 @@
     <ProgressBar
         android:id="@+id/progressBar_dialogLogin"
         style="@style/CircularProgress"
-        android:indeterminateTintMode="src_in"
-        android:indeterminateTint="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTintMode="src_in"
+        android:visibility="invisible" />
 
 
 </LinearLayout>

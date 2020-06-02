@@ -46,4 +46,9 @@ public class AlarmEventsPresenter implements IAlarmEvents.Presenter, INewEventOb
     public void handleEvent(List<AlarmData> updatedList, List<AlarmData> newEventList) {
         mView.showAlarmEvents(updatedList);
     }
+
+    @Override
+    public void handleDisconnect(String message) {
+        mView.showDisconnect(message);
+    }
 }

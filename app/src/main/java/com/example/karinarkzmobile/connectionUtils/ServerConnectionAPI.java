@@ -11,9 +11,9 @@ import retrofit2.http.QueryMap;
 
 public interface ServerConnectionAPI {
 
-//    @GET("/?command=101")
-//    Call<Response> fetchAlarmEventList();
-
-    @GET("/morkon91/server/db")
+    @GET("/?command=101")
     Call<Response> fetchAlarmEventList();
+
+//    @GET("/morkon91/server/db")
+//    Call<Response> fetchAlarmEventList();
 }

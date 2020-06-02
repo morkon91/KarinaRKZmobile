@@ -1,7 +1,5 @@
 package com.example.karinarkzmobile;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.karinarkzmobile.connectionUtils.Response;
@@ -27,16 +25,14 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     private List<AlarmData> newEvents = new ArrayList<>();
     private List<AlarmData> eventsSeenList;
 
+
     private LinkedHashSet<AlarmData> downloadedList = new LinkedHashSet<>();
 
     private List<INewEventObserver> subscribersList = new ArrayList<>();
 
     private ISharedPreferences authRepository = ServiceLocator.getAuthRepository();
 
-    //    private final String BASE_URL = "http://127.0.0.1:18001";
-//    private String baseUrl = "https://my-json-server.typicode.com";
-    private String baseUrl = "https://my-json-server.typicode.";
-
+    private String baseUrl = "https://my-json-server.typicode.com";
 
     private Gson gson = new GsonBuilder().create();
     private Retrofit retrofit = new Retrofit.Builder()
@@ -81,12 +77,14 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
                 } else {
                     Log.d(LOG_TAG, "response NOT Successful");
+                    notifyObserversAboutDisconnect(102);
                 }
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure: " + t.getMessage());
+                notifyObserversAboutDisconnect(101);
             }
         });
 
@@ -123,8 +121,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
     @Override
     public void updateUrl() {
-        this.baseUrl = "https://my-json-server.typicode." + authRepository.loadIP();
-//        this.baseUrl = "http://" + authRepository.loadIP() + ":18001";
+        this.baseUrl = "http://" + authRepository.loadIP() + ":18001";
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseUrl)
@@ -146,8 +143,24 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     public void notifyObservers() {
         for (INewEventObserver observer : subscribersList) {
             observer.handleEvent(this.alarmDataList, this.newEvents);
-
         }
+    }
+
+    @Override
+    public void notifyObserversAboutDisconnect(int code) {
+        switch (code) {
+            case 101:
+                for (INewEventObserver observer : subscribersList) {
+                    observer.handleDisconnect("No connection to server. Please check: \nIs wifi enabled or does the server work.");
+                }
+                break;
+            case 102:
+                for (INewEventObserver observer : subscribersList) {
+                    observer.handleDisconnect("No response from server. Please check: \nIs the server working correctly.");
+                }
+                break;
+        }
+
     }
 
 }

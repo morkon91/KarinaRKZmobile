@@ -19,6 +19,8 @@ import com.example.karinarkzmobile.eventInfoActivity.EventInfoActivity;
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.adapter.AlarmEventsAdapter;
 import com.example.karinarkzmobile.data.AlarmData;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
     private IAlarmEvents.Presenter mPresenter;
 
     private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
+
+    LinearLayout linearLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,8 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
 
         alarmEventsRecyclerView = view.findViewById(R.id.alarm_events_recyclerView);
         alarmEventsRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
+
+        linearLayout = view.findViewById(R.id.fragment_alarm_events);
 
         AlarmEventsAdapter.OnEventClickListener onEventClickListener = new AlarmEventsAdapter.OnEventClickListener() {
             @Override
@@ -80,6 +86,12 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
                 adapter.setItems(collection);
             }
         });
+    }
+
+    @Override
+    public void showDisconnect(String messageOfDisconnect) {
+        Snackbar.make(linearLayout, messageOfDisconnect,
+                BaseTransientBottomBar.LENGTH_LONG).show();
     }
 
     @Override

@@ -3,9 +3,7 @@ package com.example.karinarkzmobile;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -45,7 +43,7 @@ public class App extends Application {
         NotificationChannel chan2 = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             chan2 = new NotificationChannel(NOTIFICATION_DEFAULT_CHANNEL_ID, NOTIFICATION_DEFAULT_CHANNEL_ID,
-                    NotificationManager.IMPORTANCE_DEFAULT); // обычный звук
+                    NotificationManager.IMPORTANCE_HIGH); // обычный звук
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(chan2);
         }
