@@ -1,5 +1,6 @@
 package com.example.karinarkzmobile;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -123,6 +124,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     @Override
     public void updateUrl() {
         this.baseUrl = "https://my-json-server.typicode." + authRepository.loadIP();
+//        this.baseUrl = "http://" + authRepository.loadIP() + ":18001";
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseUrl)

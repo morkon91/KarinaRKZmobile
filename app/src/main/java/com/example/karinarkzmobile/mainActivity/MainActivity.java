@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
+        repository.updateUrl();
         if (!isMyServiceRunning(EventService.class)) {
-            repository.updateUrl();
             startService(new Intent(this, EventService.class));
             Log.d("stLog", "Сервис стартовал");
         } else

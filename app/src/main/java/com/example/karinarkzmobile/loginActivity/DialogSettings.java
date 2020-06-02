@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,16 +15,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.karinarkzmobile.ISharedPreferences;
+import com.example.karinarkzmobile.IShowProgressBar;
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.ServiceLocator;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class DialogSettings extends DialogFragment implements View.OnClickListener {
+public class DialogSettings extends DialogFragment implements View.OnClickListener, IShowProgressBar {
 
     private TextInputEditText addIPAddressTextInput;
     private ISharedPreferences authRepository = ServiceLocator.getAuthRepository();
     private TextView infoAboutIPTextView;
     private ImageView imageViewDialogTitle;
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
         imageViewDialogTitle = view.findViewById(R.id.imageView_dialog_title);
         imageViewDialogTitle.setColorFilter(getResources().getColor(R.color.colorAccent));
 
+        progressBar = view.findViewById(R.id.progressBar_dialogLogin);
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -66,6 +71,7 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                 if (!addIPAddressTextInput.getText().toString().isEmpty()) {
                     authRepository.saveIP(addIPAddressTextInput.getText().toString());
                     infoAboutIPTextView.setText("IP address " + authRepository.loadIP() + " saved");
+
                     dismiss();
                 } else {
                     infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
@@ -79,5 +85,15 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
     public void onDestroy() {
 
         super.onDestroy();
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void removeProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 }

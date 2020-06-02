@@ -66,8 +66,6 @@
         android:layout_gravity="center"
         android:gravity="center"/>
 
-
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm_ip_button_dialogLoginActivity"
         android:layout_width="200dp"
@@ -79,6 +77,16 @@
         android:text="Confirm IP address"
         app:cornerRadius="8dp"
         app:iconGravity="textStart" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_dialogLogin"
+        style="@style/CircularProgress"
+        android:indeterminateTintMode="src_in"
+        android:indeterminateTint="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_marginBottom="16dp"/>
 
 
 </LinearLayout>

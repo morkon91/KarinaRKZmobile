@@ -83,9 +83,6 @@
             android:layout_margin="4dp"
             app:icon="@drawable/ic_check_white_24dp"
             app:iconGravity="textStart"/>
-
-
-
     </LinearLayout>
 
 </LinearLayout>

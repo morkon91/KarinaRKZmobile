@@ -72,4 +72,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+//        if (ServiceLocator.getAuthRepository().loadIP().isEmpty()) {
+//            settingsImageView.setColorFilter(getResources().getColor(R.color.colorRed));
+//            Snackbar.make(findViewById(R.id.linear_layout_login), "IP address not saved, connection to server is not possible",
+//                    BaseTransientBottomBar.LENGTH_LONG).show();
+//        } else {
+//            settingsImageView.setColorFilter(getResources().getColor(R.color.colorPrimary));
+//            Snackbar.make(findViewById(R.id.linear_layout_login), "IP address saved, you can connect to server",
+//                    BaseTransientBottomBar.LENGTH_LONG).show();
+//        }
+        super.onResume();
+    }
 }
