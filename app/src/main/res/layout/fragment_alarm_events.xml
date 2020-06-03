@@ -11,13 +11,22 @@
     android:background="@color/colorAccent">
 
     <!-- TODO: Update blank fragment layout -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/alarm_events_recyclerView"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout_Fragment_alarm_events"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/alarm_events_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 
 </LinearLayout>

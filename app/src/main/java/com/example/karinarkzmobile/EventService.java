@@ -23,7 +23,7 @@ import static com.example.karinarkzmobile.App.NOTIFICATION_HIDE_CHANNEL_ID;
 
 public class EventService extends Service implements INewEventObserver {
 
-    private final String LOG_TAG = "My logs";
+    private final String LOG_TAG = "myLogs";
     private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
 
     private static Thread thread;
@@ -100,6 +100,10 @@ public class EventService extends Service implements INewEventObserver {
 
     @Override
     public void onDestroy() {
+        if (!thread.isInterrupted()){
+            thread.interrupt();
+            Log.d(LOG_TAG, "THREAD Interrupted");
+        }
         isServiceWork = false;
         Log.d(LOG_TAG, "onDestroy");
 

@@ -37,6 +37,7 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
     private ImageView imageViewDialogTitle;
     ProgressBar progressBar;
     private final String LOG_TAG = "MyLogs";
+    private Call<Response> call;
 
 
     @Override
@@ -80,8 +81,9 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
         switch (v.getId()) {
             case (R.id.confirm_ip_button_dialogLoginActivity):
                 if (!addIPAddressTextInput.getText().toString().isEmpty()) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    checkConnection(addIPAddressTextInput.getText().toString());
+//                    progressBar.setVisibility(View.VISIBLE);
+//                    checkConnection(addIPAddressTextInput.getText().toString());
+                    authRepository.saveIP(addIPAddressTextInput.getText().toString());
                     infoAboutIPTextView.setText("");
                     } else {
                     infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
@@ -93,7 +95,18 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
 
     @Override
     public void onDestroy() {
+        if (call != null && !call.isCanceled()){
+            call.cancel();
+        }
         super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (call != null && !call.isCanceled()){
+            call.cancel();
+        }
+        super.onDestroyView();
     }
 
     private void checkConnection(String ip) {
@@ -105,8 +118,7 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                 .baseUrl(baseUrl)
                 .build();
         ServerConnectionAPI serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
-        Call<Response> call = serverConnectionAPI.fetchAlarmEventList();
-
+        call = serverConnectionAPI.fetchAlarmEventList();
         call.enqueue(new Callback<Response>() {
 
             @Override
@@ -126,12 +138,12 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 Log.d(LOG_TAG, "No connection");
+                authRepository.saveIP(addIPAddressTextInput.getText().toString());
                 infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
                 infoAboutIPTextView.setText("No connection to the server.\nVerify the correct ip address.");
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
-
     }
 
 }

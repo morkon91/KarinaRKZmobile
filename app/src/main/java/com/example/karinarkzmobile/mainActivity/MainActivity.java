@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.karinarkzmobile.App;
 import com.example.karinarkzmobile.EventService;
 import com.example.karinarkzmobile.ISharedPreferences;
 import com.example.karinarkzmobile.R;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
+
     private ISharedPreferences authRepository = ServiceLocator.getAuthRepository();
 
     @Override
@@ -79,13 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
-        repository.updateUrl();
-        if (!isMyServiceRunning(EventService.class)) {
-            startService(new Intent(this, EventService.class));
-            Log.d("stLog", "Сервис стартовал");
-        } else
-            Log.d("stLog", "Сервис уже запущен");
-
         super.onResume();
     }
 
@@ -94,15 +88,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ServiceLocator.getAuthRepository().deleteToken();
         Log.d("splashLog", ServiceLocator.getAuthRepository().loadToken());
         super.onDestroy();
-    }
-
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

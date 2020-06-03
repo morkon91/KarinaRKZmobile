@@ -39,13 +39,21 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/confirm_add_ip_button"
+        android:id="@+id/stop_service_SettingsFragment"
         android:layout_marginTop="16dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Confirm IP address"
+        android:text="Disconnect from server"
         app:cornerRadius="8dp"
-        app:icon="@drawable/ic_check_white_24dp"
+        app:iconGravity="textStart"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/connect_to_server_SettingFragment"
+        android:layout_marginTop="16dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Connect to server"
+        app:cornerRadius="8dp"
         app:iconGravity="textStart"/>
 
     <com.google.android.material.button.MaterialButton

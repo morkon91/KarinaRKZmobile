@@ -3,6 +3,7 @@ package com.example.karinarkzmobile;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -17,6 +18,8 @@ public class App extends Application {
         return sharedPreferences;
     }
 
+    private static App instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -27,7 +30,7 @@ public class App extends Application {
         Fresco.initialize(this);
 
         sharedPreferences = getSharedPreferences("app_settings", MODE_PRIVATE);
-
+        instance = this;
     }
 
     private void createNotificationChannel() {
@@ -48,4 +51,20 @@ public class App extends Application {
             manager.createNotificationChannel(chan2);
         }
     }
+
+    public static App getInstance() {
+        return instance;
+    }
+
+    public void stopEventService(){
+        Intent cancelIntent = new Intent(this, EventService.class);
+//        cancelIntent.setAction("STOP_SERVICE");
+        stopService(cancelIntent);
+    }
+
+    public void startEventService(){
+        startService(new Intent(this, EventService.class));
+    }
+
+
 }

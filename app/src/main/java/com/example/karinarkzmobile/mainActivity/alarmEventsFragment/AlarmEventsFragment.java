@@ -1,5 +1,7 @@
 package com.example.karinarkzmobile.mainActivity.alarmEventsFragment;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,12 +10,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.example.karinarkzmobile.App;
+import com.example.karinarkzmobile.EventService;
 import com.example.karinarkzmobile.ServiceLocator;
 import com.example.karinarkzmobile.eventInfoActivity.EventInfoActivity;
 import com.example.karinarkzmobile.R;
@@ -25,7 +30,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 
-public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
+public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String EXT_ALARM_DATA = AlarmData.class.getSimpleName();
 
@@ -34,9 +39,7 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
 
     private IAlarmEvents.Presenter mPresenter;
 
-    private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
-
-    LinearLayout linearLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,10 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
         alarmEventsRecyclerView = view.findViewById(R.id.alarm_events_recyclerView);
         alarmEventsRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
 
-        linearLayout = view.findViewById(R.id.fragment_alarm_events);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout_Fragment_alarm_events);
+        swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
+
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorRed));
 
         AlarmEventsAdapter.OnEventClickListener onEventClickListener = new AlarmEventsAdapter.OnEventClickListener() {
             @Override
@@ -90,7 +96,7 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
 
     @Override
     public void showDisconnect(String messageOfDisconnect) {
-        Snackbar.make(linearLayout, messageOfDisconnect,
+        Snackbar.make(getView(), messageOfDisconnect,
                 BaseTransientBottomBar.LENGTH_LONG).show();
     }
 
@@ -104,5 +110,25 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View {
     public void onResume() {
         mPresenter.setEventsSeenList();
         super.onResume();
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        if (!isMyServiceRunning(EventService.class)){
+            App.getInstance().startEventService();
+        }
+        mPresenter.getAlarmEvents();
+
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

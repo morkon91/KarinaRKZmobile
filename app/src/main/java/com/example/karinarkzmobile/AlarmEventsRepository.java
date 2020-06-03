@@ -1,6 +1,7 @@
 package com.example.karinarkzmobile;
 
 import android.util.Log;
+import android.util.MalformedJsonException;
 
 import com.example.karinarkzmobile.connectionUtils.Response;
 import com.example.karinarkzmobile.connectionUtils.ServerConnectionAPI;
@@ -84,6 +85,9 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure: " + t.getMessage());
+//                if (t instanceof MalformedJsonException){
+//
+//                }
                 notifyObserversAboutDisconnect(101);
             }
         });

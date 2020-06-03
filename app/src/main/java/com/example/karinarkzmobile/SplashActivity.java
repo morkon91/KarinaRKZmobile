@@ -24,12 +24,10 @@ public class SplashActivity extends AppCompatActivity {
             Log.d("splashLog", "Нет токена, запускаю LoginActivity");
             finish();
         } else {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
             Log.d("splashLog", "Есть записанный токен/авторизация, запускаю MainActivity");
             finish();
         }
-
-
     }
 }
