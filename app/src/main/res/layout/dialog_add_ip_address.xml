@@ -17,20 +17,31 @@
         <ImageView
             android:id="@+id/imageView_dialog_title"
             android:layout_width="8dp"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_settings_black_24dp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_marginStart="4dp"
             android:layout_weight="7"
             android:text="Add IP address"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar_dialogLogin"
+            style="@style/CircularProgress"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:indeterminateTint="@color/colorAccent"
+            android:indeterminateTintMode="src_in"
+            android:visibility="invisible"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -63,11 +74,12 @@
         android:gravity="center"
         android:text="Info about IP address"
         android:textSize="16sp"
-        android:textStyle="normal" />
+        android:textStyle="normal"
+        android:minLines="2"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm_ip_button_dialogLoginActivity"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="50dp"
@@ -77,15 +89,7 @@
         app:cornerRadius="8dp"
         app:iconGravity="textStart" />
 
-    <ProgressBar
-        android:id="@+id/progressBar_dialogLogin"
-        style="@style/CircularProgress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:indeterminateTint="@color/colorPrimary"
-        android:indeterminateTintMode="src_in"
-        android:visibility="invisible" />
+
 
 
 </LinearLayout>

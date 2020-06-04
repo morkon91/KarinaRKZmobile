@@ -8,7 +8,7 @@ public class AuthRepository implements ISharedPreferences{
     private final String IP = "IP";
     private final String LOGIN = "LOGIN";
     private final String PASSWORD = "PASSWORD";
-    private final String TOKEN = "TOKEN";
+    private String token = "TOKEN";
 
     @Override
     public void saveIP(String ip) {
@@ -54,23 +54,16 @@ public class AuthRepository implements ISharedPreferences{
 
     @Override
     public void saveToken(String token) {
-        sharedPreferences = App.getSharedPreferences();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(TOKEN, token);
-        editor.commit();
+        this.token = token;
     }
 
     @Override
     public String loadToken() {
-        sharedPreferences = App.getSharedPreferences();
-        return sharedPreferences.getString(TOKEN, "");
+        return this.token;
     }
 
     @Override
     public void deleteToken() {
-        sharedPreferences = App.getSharedPreferences();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(TOKEN);
-        editor.commit();
+        this.token = "";
     }
 }

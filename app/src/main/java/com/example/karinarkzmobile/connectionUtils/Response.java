@@ -25,7 +25,12 @@ public class Response {
         return events;
     }
 
-    public void setEvents(List<AlarmData> events) {
+    public void setEvents
+            (List<AlarmData> events) {
         this.events = events;
+    }
+
+    public String getData() {
+        return data;
     }
 }

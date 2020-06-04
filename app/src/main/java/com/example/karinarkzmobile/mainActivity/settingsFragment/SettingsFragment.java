@@ -2,6 +2,7 @@ package com.example.karinarkzmobile.mainActivity.settingsFragment;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.karinarkzmobile.App;
@@ -99,13 +101,41 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case (R.id.close_application_button):
+//                if (isMyServiceRunning(EventService.class)){
+//                    App.getInstance().stopEventService();
+//                }
+//                authRepository.deleteToken();
+//                getActivity().finishAffinity();
+                openQuitDialog();
+                break;
+        }
+    }
+
+    private void openQuitDialog() {
+        AlertDialog.Builder quitDialog = new AlertDialog.Builder(getContext());
+        quitDialog.setTitle("Do you want to exit the application?");
+
+        quitDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
                 if (isMyServiceRunning(EventService.class)){
                     App.getInstance().stopEventService();
                 }
                 authRepository.deleteToken();
                 getActivity().finishAffinity();
-                break;
-        }
+
+            }
+        });
+
+        quitDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        quitDialog.show();
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -117,6 +147,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         }
         return false;
     }
+
 }
 
 

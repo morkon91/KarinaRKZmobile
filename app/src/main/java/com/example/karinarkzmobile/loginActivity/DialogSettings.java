@@ -1,7 +1,9 @@
 package com.example.karinarkzmobile.loginActivity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,20 +26,25 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DialogSettings extends DialogFragment implements View.OnClickListener {
+public class DialogSettings extends DialogFragment implements View.OnClickListener{
 
     private TextInputEditText addIPAddressTextInput;
     private ISharedPreferences authRepository = ServiceLocator.getAuthRepository();
     private TextView infoAboutIPTextView;
     private ImageView imageViewDialogTitle;
     ProgressBar progressBar;
-    private final String LOG_TAG = "MyLogs";
+    private final String LOG_TAG = "myLogs";
     private Call<Response> call;
+
+    private AsyncTask asyncTask;
+    private ConnectionState message;
 
 
     @Override
@@ -81,11 +88,12 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
         switch (v.getId()) {
             case (R.id.confirm_ip_button_dialogLoginActivity):
                 if (!addIPAddressTextInput.getText().toString().isEmpty()) {
-//                    progressBar.setVisibility(View.VISIBLE);
-//                    checkConnection(addIPAddressTextInput.getText().toString());
-                    authRepository.saveIP(addIPAddressTextInput.getText().toString());
+
+                    checkConnection(addIPAddressTextInput.getText().toString());
+//                    authRepository.saveIP(addIPAddressTextInput.getText().toString());
+
                     infoAboutIPTextView.setText("");
-                    } else {
+                } else {
                     infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
                     infoAboutIPTextView.setText("Please, enter IP address");
                 }
@@ -95,21 +103,20 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
 
     @Override
     public void onDestroy() {
-        if (call != null && !call.isCanceled()){
-            call.cancel();
-        }
+        cancelTask();
         super.onDestroy();
     }
 
     @Override
     public void onDestroyView() {
-        if (call != null && !call.isCanceled()){
-            call.cancel();
-        }
+        cancelTask();
         super.onDestroyView();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void checkConnection(String ip) {
+
+        Log.d(LOG_TAG, "Check connection...");
 
         String baseUrl = "http://" + ip + ":18001";
         Gson gson = new GsonBuilder().create();
@@ -118,32 +125,94 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                 .baseUrl(baseUrl)
                 .build();
         ServerConnectionAPI serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
-        call = serverConnectionAPI.fetchAlarmEventList();
-        call.enqueue(new Callback<Response>() {
 
+        asyncTask = new AsyncTask<Void, ConnectionState, ConnectionState>() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                if (response.isSuccessful()) {
-                    Log.d(LOG_TAG, "response Successful");
-                    authRepository.saveIP(addIPAddressTextInput.getText().toString());
-                    progressBar.setVisibility(View.INVISIBLE);
-                    dismiss();
-                } else {
-                    Log.d(LOG_TAG, "response NOT Successful");
-                    infoAboutIPTextView.setText("No response from the server.\nPerhaps the server is not working properly");
-                    progressBar.setVisibility(View.INVISIBLE);
+            protected ConnectionState doInBackground(Void... voids) {
+                Log.d(LOG_TAG, "Doing request to server. IP Address: " + baseUrl);
+                call = serverConnectionAPI.fetchAlarmEventList();
+                try {
+                    retrofit2.Response<Response> responseFromServer = call.execute();
+                    Response response = responseFromServer.body();
+                    Log.d(LOG_TAG, "response: " + response.getData());
+
+                    if (!response.getData().isEmpty()) {
+                        Log.d(LOG_TAG, "Connection Successful" + response.getData());
+                        message = ConnectionState.CONNECTION_SUCCESS;
+                    } else {
+
+                        message = ConnectionState.EMPTY_RESPONSE;
+                    }
+                } catch (UnknownHostException e) {
+                    Log.d(LOG_TAG, "Connection NOT Successful:");
+                    Log.d(LOG_TAG, "Exeption: " + e);
+//                    message = "Connection NOT Successful. \nInvalid ip address";
+                    message = ConnectionState.INVALID_IP_ADDRESS;
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    Log.d(LOG_TAG, "Connection NOT Successful:");
+                    Log.d(LOG_TAG, "Exeption: " + e);
+//                    message = "Connection NOT Successful. \nNo response from server";
+                    message = ConnectionState.SERVER_NOT_RESPONSE;
+                    e.printStackTrace();
                 }
+                return message;
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                Log.d(LOG_TAG, "No connection");
-                authRepository.saveIP(addIPAddressTextInput.getText().toString());
-                infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
-                infoAboutIPTextView.setText("No connection to the server.\nVerify the correct ip address.");
-                progressBar.setVisibility(View.INVISIBLE);
+            protected void onPreExecute() {
+                progressBar.setVisibility(View.VISIBLE);
+                super.onPreExecute();
             }
-        });
+
+            @Override
+            protected void onPostExecute(ConnectionState state) {
+                switch (state){
+                    case CONNECTION_SUCCESS:
+                        infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        infoAboutIPTextView.setText("Connection Successful");
+                        authRepository.saveIP(addIPAddressTextInput.getText().toString());
+                        dismiss();
+                        break;
+                    case EMPTY_RESPONSE:
+                        Log.d(LOG_TAG, "Connection NOT Successful: empty response from server.");
+                        infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
+                        infoAboutIPTextView.setText("Connection NOT Successful: empty response from server.");
+                        authRepository.saveIP(addIPAddressTextInput.getText().toString());
+                        break;
+                    case INVALID_IP_ADDRESS:
+                        infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
+                        infoAboutIPTextView.setText("Connection NOT Successful. \nInvalid ip address");
+                        break;
+                    case SERVER_NOT_RESPONSE:
+                        infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
+                        infoAboutIPTextView.setText("Connection NOT Successful. \nNo response from server");
+                        authRepository.saveIP(addIPAddressTextInput.getText().toString());
+                        break;
+                }
+
+                progressBar.setVisibility(View.INVISIBLE);
+                super.onPostExecute(state);
+            }
+
+            @Override
+            protected void onProgressUpdate(ConnectionState... values) {
+
+                super.onProgressUpdate(values);
+            }
+        }.execute();
     }
 
+
+    public void cancelTask() {
+        if (asyncTask != null){
+            asyncTask.cancel(true);
+            call.cancel();
+        }
+    }
+
+    enum ConnectionState{
+        CONNECTION_SUCCESS, EMPTY_RESPONSE, INVALID_IP_ADDRESS, SERVER_NOT_RESPONSE;
+
+    }
 }
