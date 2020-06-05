@@ -177,7 +177,7 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                     case EMPTY_RESPONSE:
                         Log.d(LOG_TAG, "Connection NOT Successful: empty response from server.");
                         infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
-                        infoAboutIPTextView.setText("Connection NOT Successful: empty response from server.");
+                        infoAboutIPTextView.setText("Connection NOT Successful. Empty response from server.");
                         authRepository.saveIP(addIPAddressTextInput.getText().toString());
                         break;
                     case INVALID_IP_ADDRESS:
@@ -203,6 +203,9 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
         }.execute();
     }
 
+    enum ConnectionState{
+        CONNECTION_SUCCESS, EMPTY_RESPONSE, INVALID_IP_ADDRESS, SERVER_NOT_RESPONSE;
+    }
 
     public void cancelTask() {
         if (asyncTask != null){
@@ -211,8 +214,5 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
         }
     }
 
-    enum ConnectionState{
-        CONNECTION_SUCCESS, EMPTY_RESPONSE, INVALID_IP_ADDRESS, SERVER_NOT_RESPONSE;
 
-    }
 }

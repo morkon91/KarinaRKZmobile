@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case ABOUT_US:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AlarmEventsFragment()).commit();
+                fragmentOnResume = FragmentResume.ALARM_EVENTS;
                 break;
         }
     }

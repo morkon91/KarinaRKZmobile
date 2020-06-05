@@ -16,10 +16,20 @@
         android:text="Settings"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginBottom="16dp"/>
+        android:textColor="@color/colorPrimary" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_fragmentSettings"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        android:indeterminateTintMode="src_in"
+        android:indeterminateTint="@color/colorPrimary"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ip_address_InputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +37,8 @@
         android:layout_marginTop="16dp"
         android:hint="Enter IP address"
         android:textColorHint="@color/colorPrimaryDark"
-        app:boxStrokeColor="@color/colorPrimaryDark">
+        app:boxStrokeColor="@color/colorPrimaryDark"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ip_address_editText"
@@ -35,8 +46,11 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:inputType="number|numberDecimal"
-            android:digits="0123456789."/>
+            android:digits="0123456789."
+            />
     </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/stop_service_SettingsFragment"
@@ -64,5 +78,4 @@
         android:text="Сlose application"
         app:cornerRadius="8dp"
         app:iconGravity="textStart" />
-
 </LinearLayout>
