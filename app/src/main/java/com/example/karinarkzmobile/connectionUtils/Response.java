@@ -19,8 +19,7 @@ public class Response {
             events.get(i).setOrdinaryPhotoURL("http://192.168.88.101:18001/?command=102&eventid=" + events.get(i).getEventid());
             events.get(i).setTemperaturePhotoURL("http://192.168.88.101:18001/?command=103&eventid=" + events.get(i).getEventid());
 
-//            events.get(i).setOrdinaryPhotoURL("https://images.wallpaperscraft.ru/image/bmw_fary_avtomobil_124112_1024x768.jpg");
-//            events.get(i).setTemperaturePhotoURL("https://wpapers.ru/wallpapers/Holidays/New-Year/5536/PREV_Новый-год.jpg");
+            events.get(i).setEventIDint(Integer.parseInt(events.get(i).getEventid()));
         }
         return events;
     }

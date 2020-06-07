@@ -8,6 +8,9 @@ import android.content.SharedPreferences;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class App extends Application {
 
     public static final String NOTIFICATION_HIDE_CHANNEL_ID = "hide";
@@ -20,6 +23,12 @@ public class App extends Application {
 
     private static App instance;
 
+    private Map<String, String> authMap = new HashMap<>();
+
+    public Map<String, String> getAuthMap() {
+        return authMap;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -31,6 +40,9 @@ public class App extends Application {
 
         sharedPreferences = getSharedPreferences("app_settings", MODE_PRIVATE);
         instance = this;
+
+        authMap.put("111", "111");
+        authMap.put("222", "222");
     }
 
     private void createNotificationChannel() {
@@ -46,7 +58,7 @@ public class App extends Application {
         NotificationChannel chan2 = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             chan2 = new NotificationChannel(NOTIFICATION_DEFAULT_CHANNEL_ID, NOTIFICATION_DEFAULT_CHANNEL_ID,
-                    NotificationManager.IMPORTANCE_HIGH); // обычный звук
+                    NotificationManager.IMPORTANCE_DEFAULT); // обычный звук
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(chan2);
         }

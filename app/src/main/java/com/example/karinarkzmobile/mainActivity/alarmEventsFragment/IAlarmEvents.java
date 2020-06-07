@@ -21,7 +21,7 @@ public interface IAlarmEvents {
 
     interface Repository{
 
-        int loadEventCount();
+        void loadEventCount();
         void loadAlarmEventList();
         List<AlarmData> getAllEvents();
         void setEventsSeenList();

@@ -8,7 +8,7 @@ public class AuthRepository implements ISharedPreferences{
     private final String IP = "IP";
     private final String LOGIN = "LOGIN";
     private final String PASSWORD = "PASSWORD";
-    private String token = "TOKEN";
+    private String token = "";
 
     @Override
     public void saveIP(String ip) {

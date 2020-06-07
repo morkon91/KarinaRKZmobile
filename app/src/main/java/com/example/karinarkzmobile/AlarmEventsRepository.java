@@ -1,7 +1,6 @@
 package com.example.karinarkzmobile;
 
 import android.util.Log;
-import android.util.MalformedJsonException;
 
 import com.example.karinarkzmobile.connectionUtils.Response;
 import com.example.karinarkzmobile.connectionUtils.ServerConnectionAPI;
@@ -23,9 +22,11 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
     private final String LOG_TAG = "myLogs";
     private List<AlarmData> alarmDataList = new ArrayList<>();
-    private List<AlarmData> newEvents = new ArrayList<>();
-    private List<AlarmData> eventsSeenList;
+    private int newEventsCount = 0;
+    private int newEventsCountBack = 0;
+    private List<AlarmData> eventsSeenList = new ArrayList<>();
 
+    private Call<Response> call;
 
     private LinkedHashSet<AlarmData> downloadedList = new LinkedHashSet<>();
 
@@ -43,14 +44,14 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     private ServerConnectionAPI serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
 
     @Override
-    public int loadEventCount() {
-        return alarmDataList.size();
+    public void loadEventCount() {
+        alarmDataList.clear();
     }
 
     @Override
     public void loadAlarmEventList() {
 
-        Call<Response> call = serverConnectionAPI.fetchAlarmEventList();
+        call = serverConnectionAPI.fetchAlarmEventList();
 
         call.enqueue(new Callback<Response>() {
             @Override
@@ -58,49 +59,50 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
                 if (response.isSuccessful()) {
                     Log.d(LOG_TAG, "response.isSuccessful()");
-
+                    downloadedList.clear();
                     downloadedList.addAll(response.body().getEvents());
-
                     Log.d(LOG_TAG, "Скачал новый список, количество элементов: " + response.body().getEvents().size());
+
+                    if (downloadedList.size() > alarmDataList.size()){
+                        newEventsCount++;
+                    }
+                    if (downloadedList.size() == 0){
+                        newEventsCount = 0;
+                    }
 
                     alarmDataList = new ArrayList<>(downloadedList);
                     Log.d(LOG_TAG, "Размер списка для отображения: " + alarmDataList.size());
-                    for (int i = 0; i < alarmDataList.size(); i++) {
-                        Log.d(LOG_TAG,
-                                "обычная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getOrdinaryPhotoURL());
-                        Log.d(LOG_TAG,
-                                "температурная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getTemperaturePhotoURL());
-                    }
-                    newEvents = createNewElementList(eventsSeenList, alarmDataList);
-                    Log.d(LOG_TAG, "Количество новых элементов: " + newEvents.size());
-                    Log.d(LOG_TAG, "==========================================");
+//                    for (int i = 0; i < alarmDataList.size(); i++) {
+//                        Log.d(LOG_TAG,
+//                                "обычная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getOrdinaryPhotoURL());
+//                        Log.d(LOG_TAG,
+//                                "температурная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getTemperaturePhotoURL());
+//                        Log.d(LOG_TAG, "int id элемента списка № " + i + " = " + alarmDataList.get(i).getEventIDint());
+//                    }
 
+//                    newEvents = createNewElementList(eventsSeenList, alarmDataList);
 
                 } else {
                     Log.d(LOG_TAG, "response NOT Successful");
                     notifyObserversAboutDisconnect(102);
                 }
+                notifyObservers();
+
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 Log.d(LOG_TAG, "onFailure: " + t.getMessage());
-//                if (t instanceof MalformedJsonException){
-//
-//                }
+                newEventsCount = 0;
                 notifyObserversAboutDisconnect(101);
             }
         });
 
-        notifyObservers();
     }
 
-    private List<AlarmData> createNewElementList(List<AlarmData> eventsSeenList, List<AlarmData> alarmDataList) {
-        List<AlarmData> list = new ArrayList<>(alarmDataList);
-        if (eventsSeenList != null)
-            list.removeAll(eventsSeenList);
 
-        return list;
+    private List<AlarmData> createNewElementList(List<AlarmData> eventsSeenList, List<AlarmData> alarmDataList) {
+        return null;
     }
 
     @Override
@@ -110,17 +112,8 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
     @Override
     public void setEventsSeenList() {
-        List<AlarmData> list = new ArrayList<>();
-        list.addAll(alarmDataList);
-        eventsSeenList = list;
-        newEvents = createNewElementList(eventsSeenList, alarmDataList);
+        newEventsCount = 0;
         notifyObservers();
-        Log.d(LOG_TAG,
-                "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        Log.d(LOG_TAG,
-                "Отработал метод setEventsSeenList, количество увиденных эелементов: " + eventsSeenList.size());
-        Log.d(LOG_TAG,
-                "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
     @Override
@@ -132,6 +125,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
                 .build();
         serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
     }
+
 
     @Override
     public void addNewEventObserver(INewEventObserver observer) {
@@ -146,7 +140,7 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
     @Override
     public void notifyObservers() {
         for (INewEventObserver observer : subscribersList) {
-            observer.handleEvent(this.alarmDataList, this.newEvents);
+            observer.handleEvent(alarmDataList, newEventsCount);
         }
     }
 

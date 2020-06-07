@@ -18,13 +18,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if (authRepository.loadToken().isEmpty()){
+        if (!authRepository.loadToken().equals("token")){
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
             Log.d("splashLog", "Нет токена, запускаю LoginActivity");
             finish();
         } else {
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             Log.d("splashLog", "Есть записанный токен/авторизация, запускаю MainActivity");
             finish();

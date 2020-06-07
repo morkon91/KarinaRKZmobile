@@ -32,6 +32,7 @@ public class EventService extends Service implements INewEventObserver {
     private Intent cancelIntent;
     private PendingIntent cancelPendingIntent;
     private int newEventList;
+    private int newAlarmDataListCount;
     private boolean isServiceWork;
 
     public static Thread getThread() {
@@ -100,7 +101,7 @@ public class EventService extends Service implements INewEventObserver {
 
     @Override
     public void onDestroy() {
-        if (!thread.isInterrupted()){
+        if (!thread.isInterrupted()) {
             thread.interrupt();
             Log.d(LOG_TAG, "THREAD Interrupted");
         }
@@ -117,27 +118,38 @@ public class EventService extends Service implements INewEventObserver {
     }
 
     @Override
-    public void handleEvent(List<AlarmData> updatedList, List<AlarmData> newEventList) {
+    public void handleEvent(List<AlarmData> updatedList, int newEventsCount) {
 
-        if (this.newEventList != newEventList.size() && isServiceWork) {
-            if (newEventList.size() > 0) {
-                showNotification(updatedList.size(), newEventList.size(), NOTIFICATION_DEFAULT_CHANNEL_ID);
-            } else {
-                showNotification(updatedList.size(), newEventList.size(), NOTIFICATION_HIDE_CHANNEL_ID);
-            }
-            this.newEventList = newEventList.size();
+        String message = "";
+        if (newEventsCount > 0) {
+            message = "There are new alarm events";
+        } else {
+            message = "No new alarm events";
         }
+
+        if ((this.newAlarmDataListCount != updatedList.size() && isServiceWork) || (newEventsCount > 0 && isServiceWork)) {
+            if ((newEventsCount == this.newEventList) || newEventsCount == 0){
+                showNotification(updatedList.size(), message, NOTIFICATION_HIDE_CHANNEL_ID);
+            }else{
+                showNotification(updatedList.size(), message, NOTIFICATION_DEFAULT_CHANNEL_ID);
+            }
+        } else {
+            showNotification(updatedList.size(), message, NOTIFICATION_HIDE_CHANNEL_ID);
+        }
+        this.newEventList = newEventsCount;
+        this.newAlarmDataListCount = updatedList.size();
     }
+
 
     @Override
     public void handleDisconnect(String message) {
 
     }
 
-    private void showNotification(int updatedListSize, int newEventListSize, String notificationDefaultChannelId) {
+    private void showNotification(int updatedEventsCount, String message, String notificationDefaultChannelId) {
         Notification notification = new NotificationCompat.Builder(EventService.this, notificationDefaultChannelId)
-                .setContentTitle("Number of new events: " + newEventListSize)
-                .setContentText("Number of events: " + updatedListSize)
+                .setContentTitle(message)
+                .setContentText("Count of events: " + updatedEventsCount)
                 .setTicker("setTicker")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)

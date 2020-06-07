@@ -22,6 +22,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText loginTextInputLayout, passwordTextInputLayout;
@@ -29,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView settingsImageView;
     private DialogSettings dialogSettings;
     private IAlarmEvents.Repository repository = ServiceLocator.getRepository();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +61,12 @@ public class LoginActivity extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Map<String, String> map = App.getInstance().getAuthMap();
                 if (!ServiceLocator.getAuthRepository().loadIP().isEmpty()){
-                    if (loginTextInputLayout.getText().toString().equals("")
-                            && passwordTextInputLayout.getText().toString().equals("")) {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        repository.updateUrl();
-                        if (!isMyServiceRunning(EventService.class)) {
-                            App.getInstance().startEventService();
-                            Log.d("stLog", "Сервис стартовал");
-                        } else
-                            Log.d("stLog", "Сервис уже запущен");
-                        finish();
+
+                    if (map.containsKey(loginTextInputLayout.getText().toString())
+                            && map.get(loginTextInputLayout.getText().toString()).equals(passwordTextInputLayout.getText().toString())) {
+                        login();
                     } else {
                         Toast.makeText(LoginActivity.this, "Не верный логин или пароль", Toast.LENGTH_SHORT).show();
                     }
@@ -104,5 +101,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void login(){
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        repository.updateUrl();
+        if (!isMyServiceRunning(EventService.class)) {
+            App.getInstance().startEventService();
+            Log.d("stLog", "Сервис стартовал");
+        } else
+            Log.d("stLog", "Сервис уже запущен");
+        finish();
     }
 }

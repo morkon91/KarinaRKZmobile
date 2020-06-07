@@ -194,12 +194,6 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                 progressBar.setVisibility(View.INVISIBLE);
                 super.onPostExecute(state);
             }
-
-            @Override
-            protected void onProgressUpdate(ConnectionState... values) {
-
-                super.onProgressUpdate(values);
-            }
         }.execute();
     }
 

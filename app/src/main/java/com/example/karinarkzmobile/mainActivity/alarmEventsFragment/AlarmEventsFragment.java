@@ -2,11 +2,13 @@ package com.example.karinarkzmobile.mainActivity.alarmEventsFragment;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
@@ -109,6 +111,8 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View, 
     @Override
     public void onResume() {
         mPresenter.setEventsSeenList();
+        if (!isMyServiceRunning(EventService.class))
+            mPresenter.getAlarmEvents();
         super.onResume();
     }
 
@@ -117,9 +121,15 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View, 
         swipeRefreshLayout.setRefreshing(true);
         if (!isMyServiceRunning(EventService.class)){
             App.getInstance().startEventService();
+            Snackbar.make(getView(), "Permanent server connection resumed",
+                    BaseTransientBottomBar.LENGTH_LONG).show();
+            swipeRefreshLayout.setRefreshing(false);
+        }else {
+            Snackbar.make(getView(), "Permanent connection to the server is already active",
+                    BaseTransientBottomBar.LENGTH_LONG).show();
+            swipeRefreshLayout.setRefreshing(false);
         }
         mPresenter.getAlarmEvents();
-
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -131,4 +141,5 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View, 
         }
         return false;
     }
+
 }

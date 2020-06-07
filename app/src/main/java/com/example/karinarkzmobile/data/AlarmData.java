@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class AlarmData implements Serializable {
 
+    private int eventIDint;
     @SerializedName("eventid")
     @Expose
     private String eventid;
@@ -18,7 +19,6 @@ public class AlarmData implements Serializable {
     @Expose
     private String temp;
 
-
     private String ordinaryPhotoURL;
 
     private String temperaturePhotoURL;
@@ -27,10 +27,13 @@ public class AlarmData implements Serializable {
         this.eventid = alarmEventID;
         this.eventtime = timeOfAlarmEvent;
         this.temp = temperature;
-        this.ordinaryPhotoURL = "http://127.0.0.1:18001/?command=102&eventid=" + alarmEventID;
-        this.temperaturePhotoURL = "http://127.0.0.1:18001/?command=103&eventid=" + alarmEventID;
-//        this.ordinaryPhotoURL = "http://www.catalog-vaz.ru/images/wlp/125628-1024x768.jpg";
-//        this.temperaturePhotoURL = "https://wpapers.ru/wallpapers/Holidays/New-Year/5536/PREV_Новый-год.jpg";
+    }
+
+    @Override
+    public String toString() {
+        return "AlarmData{" +
+                "eventid='" + eventid + '\'' +
+                '}';
     }
 
     @Override
@@ -38,7 +41,8 @@ public class AlarmData implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlarmData alarmData = (AlarmData) o;
-        return eventid.equals(alarmData.eventid) &&
+        return eventIDint == alarmData.eventIDint &&
+                Objects.equals(eventid, alarmData.eventid) &&
                 Objects.equals(eventtime, alarmData.eventtime) &&
                 Objects.equals(temp, alarmData.temp) &&
                 Objects.equals(ordinaryPhotoURL, alarmData.ordinaryPhotoURL) &&
@@ -47,7 +51,15 @@ public class AlarmData implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventid, eventtime, temp, ordinaryPhotoURL, temperaturePhotoURL);
+        return Objects.hash(eventIDint, eventid, eventtime, temp, ordinaryPhotoURL, temperaturePhotoURL);
+    }
+
+    public int getEventIDint() {
+        return eventIDint;
+    }
+
+    public void setEventIDint(int eventIDint) {
+        this.eventIDint = eventIDint;
     }
 
     public void setEventid(String eventid) {
