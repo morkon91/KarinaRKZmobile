@@ -9,7 +9,7 @@ public interface IAlarmEvents {
 
     interface View{
         void showAlarmEvents(List<AlarmData> alarmData);
-        void showDisconnect(String message);
+        void showDisconnect(int message);
     }
 
     interface Presenter{

@@ -56,7 +56,7 @@ public class AlarmEventsPresenter implements IAlarmEvents.Presenter, INewEventOb
     }
 
     @Override
-    public void handleDisconnect(String message) {
+    public void handleDisconnect(int message) {
         mView.showDisconnect(message);
     }
 

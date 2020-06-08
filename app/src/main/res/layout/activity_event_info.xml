@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Alert Event Information"
+            android:text="@string/alert_event_information"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -49,12 +49,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Temperature photo"/>
+            android:text="@string/temperature_photo"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Ordinary photo"/>
+            android:text="@string/ordinary_photo"/>
 
     </com.google.android.material.tabs.TabLayout>
 
@@ -77,7 +77,7 @@
         android:id="@+id/location_event_info_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Alarm event"
+        android:text="@string/alarm_event"
         android:paddingStart="16dp"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -86,7 +86,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Time of alarm event"
+        android:text="@string/time_of_alarm_event"
         android:paddingStart="16dp"
         android:textSize="18sp"/>
 
@@ -103,7 +103,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Detected temperature"
+        android:text="@string/detected_temperature"
         android:paddingStart="16dp"
         android:textSize="18sp"/>
 

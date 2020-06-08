@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -100,10 +99,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case (R.id.stop_service_SettingsFragment):
                 if (isMyServiceRunning(EventService.class)) {
                     App.getInstance().stopEventService();
-                    Snackbar.make(getView(), "You are disconnected from the server.",
+                    Snackbar.make(getView(), R.string.you_are_disconnected_from_the_server,
                             BaseTransientBottomBar.LENGTH_LONG).show();
                 } else {
-                    Snackbar.make(getView(), "You are already disconnected from the server.",
+                    Snackbar.make(getView(), R.string.you_are_already_disconnected_from_the_server,
                             BaseTransientBottomBar.LENGTH_LONG).show();
                 }
                 break;
@@ -112,7 +111,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     progressBar.setVisibility(View.VISIBLE);
                     checkConnection(ipAddressEditText.getText().toString());
                 } else {
-                    Snackbar.make(getView(), "You are already connected to the server.",
+                    Snackbar.make(getView(), R.string.you_are_already_connected_to_the_server,
                             BaseTransientBottomBar.LENGTH_LONG).show();
                 }
                 break;
@@ -124,7 +123,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private void openQuitDialog() {
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(getContext());
-        quitDialog.setTitle("Do you want to exit the application?");
+        quitDialog.setTitle(R.string.do_you_want_to_exit_the_application);
 
         quitDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
@@ -174,9 +173,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 .build();
         ServerConnectionAPI serverConnectionAPI = retrofit.create(ServerConnectionAPI.class);
 
-        asyncTask = new AsyncTask<Void, SettingsFragment.ConnectionState, SettingsFragment.ConnectionState>() {
+        asyncTask = new AsyncTask<Void, ConnectionState, ConnectionState>() {
             @Override
-            protected SettingsFragment.ConnectionState doInBackground(Void... voids) {
+            protected ConnectionState doInBackground(Void... voids) {
                 Log.d(LOG_TAG, "Doing request to server. IP Address: " + baseUrl);
                 call = serverConnectionAPI.fetchAlarmEventList();
                 try {
@@ -186,22 +185,22 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
                     if (!response.getData().isEmpty()) {
                         Log.d(LOG_TAG, "Connection Successful" + response.getData());
-                        message = SettingsFragment.ConnectionState.CONNECTION_SUCCESS;
+                        message = ConnectionState.CONNECTION_SUCCESS;
                     } else {
 
-                        message = SettingsFragment.ConnectionState.EMPTY_RESPONSE;
+                        message = ConnectionState.EMPTY_RESPONSE;
                     }
                 } catch (UnknownHostException e) {
                     Log.d(LOG_TAG, "Connection NOT Successful:");
                     Log.d(LOG_TAG, "Exeption: " + e);
 //                    message = "Connection NOT Successful. \nInvalid ip address";
-                    message = SettingsFragment.ConnectionState.INVALID_IP_ADDRESS;
+                    message = ConnectionState.INVALID_IP_ADDRESS;
                     e.printStackTrace();
                 } catch (IOException e) {
                     Log.d(LOG_TAG, "Connection NOT Successful:");
                     Log.d(LOG_TAG, "Exeption: " + e);
 //                    message = "Connection NOT Successful. \nNo response from server";
-                    message = SettingsFragment.ConnectionState.SERVER_NOT_RESPONSE;
+                    message = ConnectionState.SERVER_NOT_RESPONSE;
                     e.printStackTrace();
                 }
                 return message;
@@ -213,24 +212,24 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
 
             @Override
-            protected void onPostExecute(SettingsFragment.ConnectionState state) {
+            protected void onPostExecute(ConnectionState state) {
                 switch (state){
                     case CONNECTION_SUCCESS:
                         ipAddressInputLayout.setEndIconDrawable(getResources().getDrawable(R.drawable.ic_check_white_24dp));
                         authRepository.saveIP(ipAddressEditText.getText().toString());
                         repository.updateUrl();
                         App.getInstance().startEventService();
-                        Snackbar.make(getView(), "Connection to server restored.",
+                        Snackbar.make(getView(), R.string.connection_to_server_restored,
                                 BaseTransientBottomBar.LENGTH_LONG).show();
                         break;
                     case EMPTY_RESPONSE:
-                        ipAddressInputLayout.setError("Connection NOT Successful: empty response from server.");
+                        ipAddressInputLayout.setError(getString(R.string.empty_response));
                         break;
                     case INVALID_IP_ADDRESS:
-                        ipAddressInputLayout.setError("Connection NOT Successful. \nInvalid ip address.");
+                        ipAddressInputLayout.setError(getString(R.string.invalid_ip));
                         break;
                     case SERVER_NOT_RESPONSE:
-                        ipAddressInputLayout.setError("Connection NOT Successful. \nNo response from server.");
+                        ipAddressInputLayout.setError(getString(R.string.no_response));
                         break;
                 }
                 progressBar.setVisibility(View.INVISIBLE);
@@ -238,7 +237,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
 
             @Override
-            protected void onProgressUpdate(SettingsFragment.ConnectionState... values) {
+            protected void onProgressUpdate(ConnectionState... values) {
 
                 super.onProgressUpdate(values);
             }

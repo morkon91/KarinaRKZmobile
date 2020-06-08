@@ -122,9 +122,9 @@ public class EventService extends Service implements INewEventObserver {
 
         String message = "";
         if (newEventsCount > 0) {
-            message = "There are new alarm events";
+            message = getString(R.string.new_alarm_notification);
         } else {
-            message = "No new alarm events";
+            message = getString(R.string.no_alarm_notification);
         }
 
         if ((this.newAlarmDataListCount != updatedList.size() && isServiceWork) || (newEventsCount > 0 && isServiceWork)) {
@@ -142,19 +142,19 @@ public class EventService extends Service implements INewEventObserver {
 
 
     @Override
-    public void handleDisconnect(String message) {
+    public void handleDisconnect(int message) {
 
     }
 
     private void showNotification(int updatedEventsCount, String message, String notificationDefaultChannelId) {
         Notification notification = new NotificationCompat.Builder(EventService.this, notificationDefaultChannelId)
                 .setContentTitle(message)
-                .setContentText("Count of events: " + updatedEventsCount)
+                .setContentText(getString(R.string.count_of_events) + " " + updatedEventsCount)
                 .setTicker("setTicker")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
-                .addAction(0, "Disconnect from server", cancelPendingIntent)
+                .addAction(0, getString(R.string.disconnect_from_server), cancelPendingIntent)
 
                 .build();
 

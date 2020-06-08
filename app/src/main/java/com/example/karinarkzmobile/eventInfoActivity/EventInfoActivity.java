@@ -49,7 +49,7 @@ public class EventInfoActivity extends AppCompatActivity {
         timeOfAlarmEventInfo.setText(alarmEvent.getEventtime());
         detectedTemperature.setText(alarmEvent.getTemp());
 
-        locationEventInfo.setText("Alert event information:");
+        locationEventInfo.setText(R.string.alert_event_information);
 
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
@@ -63,8 +63,8 @@ public class EventInfoActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
-        viewPagerAdapter.addFragment(temperaturePhotoFragment, "Temperature photo");
-        viewPagerAdapter.addFragment(ordinaryPhotoFragment, "Ordinary photo");
+        viewPagerAdapter.addFragment(temperaturePhotoFragment, getString(R.string.temperature_photo));
+        viewPagerAdapter.addFragment(ordinaryPhotoFragment, getString(R.string.ordinary_photo));
 
         viewPager.setAdapter(viewPagerAdapter);
 

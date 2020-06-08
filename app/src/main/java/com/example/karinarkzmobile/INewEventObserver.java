@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface INewEventObserver {
     void handleEvent(List<AlarmData> updatedList, int newEventsCount);
-    void handleDisconnect(String message);
+    void handleDisconnect(int message);
 }

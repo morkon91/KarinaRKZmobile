@@ -117,9 +117,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void openQuitDialog() {
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(this);
-        quitDialog.setTitle("Do you want to exit the application?");
+        quitDialog.setTitle(R.string.do_you_want_to_exit_the_application);
 
-        quitDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        quitDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        quitDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        quitDialog.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub

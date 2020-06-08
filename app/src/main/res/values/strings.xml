@@ -1,7 +1,46 @@
 <resources>
     <string name="app_name">Karina.R.KZ.mobile</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="alert_event_information">Alert Event Information</string>
+    <string name="temperature_photo">Temperature photo</string>
+    <string name="ordinary_photo">Ordinary photo</string>
+    <string name="alarm_event">Alarm event</string>
+    <string name="time_of_alarm_event">Time of alarm event</string>
+    <string name="detected_temperature">Detected temperature</string>
+    <string name="log_in_to">Log in to</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="add_ip_address">Add IP address</string>
+    <string name="settings">Settings</string>
+    <string name="disconnect_from_server">Disconnect from server</string>
+    <string name="connect_to_server">Connect to server</string>
+    <string name="lose_application">Сlose application</string>
+    <string name="count_of_events">Count of events: </string>
+    <string name="new_alarm_notification">There are new alarm events</string>
+    <string name="no_alarm_notification">No new alarm events</string>
+    <string name="do_you_want_to_exit_the_application">Do you want to exit the application?</string>
+    <string name="you_are_already_connected_to_the_server">You are already connected to the server.</string>
+    <string name="you_are_already_disconnected_from_the_server">You are already disconnected from the server.</string>
+    <string name="you_are_disconnected_from_the_server">You are disconnected from the server.</string>
+    <string name="connection_to_server_restored">Connection to server restored.</string>
+    <string name="empty_response">Connection NOT Successful. \nEmpty response from server.</string>
+    <string name="invalid_ip">Connection NOT Successful. \nInvalid ip address.</string>
+    <string name="no_response">Connection NOT Successful.\nNo response from server.</string>
+    <string name="invalid_login_or_password">Invalid login or password</string>
+    <string name="ip_address_not_saved">IP address not saved, connection to server is not possible. Please, enter IP address.</string>
+    <string name="ip_address_saved">IP address saved, you can connect to server</string>
+    <string name="please_enter_IP_address">Please, enter IP address</string>
+    <string name="permanent_server_connection_resumed">Permanent server connection resumed</string>
+    <string name="permanent_connection_to_the_server_is_already_active">Permanent connection to the server is already active</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="confirm_ip_address">Confirm IP address</string>
+    <string name="no_connection_to_server_Please_check">No connection to server. Please check:</string>
+    <string name="is_wifi_enabled">Is wifi enabled or does the server work.</string>
+    <string name="no_response_from_server_Please_check">No response from server. Please check:</string>
+    <string name="is_the_server_working_correctly">Is the server working correctly.</string>
+    <string name="alarm_notification">Alarm notification</string>
 
 </resources>

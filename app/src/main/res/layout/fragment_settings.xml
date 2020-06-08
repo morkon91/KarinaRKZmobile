@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"
+        android:text="@string/settings"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
-        android:hint="Enter IP address"
+        android:hint="@string/add_ip_address"
         android:textColorHint="@color/colorPrimaryDark"
         app:boxStrokeColor="@color/colorPrimaryDark"
         >
@@ -57,7 +57,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Disconnect from server"
+        android:text="@string/disconnect_from_server"
         app:cornerRadius="8dp"
         app:iconGravity="textStart"/>
 
@@ -66,7 +66,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Connect to server"
+        android:text="@string/connect_to_server"
         app:cornerRadius="8dp"
         app:iconGravity="textStart"/>
 
@@ -75,7 +75,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Сlose application"
+        android:text="@string/lose_application"
         app:cornerRadius="8dp"
         app:iconGravity="textStart" />
 </LinearLayout>

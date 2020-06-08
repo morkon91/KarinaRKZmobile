@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.karinarkzmobile.App;
 import com.example.karinarkzmobile.EventService;
 import com.example.karinarkzmobile.R;
@@ -24,7 +26,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements ISettingsDialog {
 
     private TextInputEditText loginTextInputLayout, passwordTextInputLayout;
     private Button signInButton;
@@ -46,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         settingsImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogSettings = new DialogSettings();
+                dialogSettings = new DialogSettings(LoginActivity.this);
                 dialogSettings.show(getSupportFragmentManager(), "dialogSettings");
             }
         });
@@ -68,11 +70,10 @@ public class LoginActivity extends AppCompatActivity {
                             && map.get(loginTextInputLayout.getText().toString()).equals(passwordTextInputLayout.getText().toString())) {
                         login();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Не верный логин или пароль", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, R.string.invalid_login_or_password, Toast.LENGTH_SHORT).show();
                     }
                 }else {
-                    Snackbar.make(findViewById(R.id.linear_layout_login), "IP address not saved, connection to server" +
-                                    " is not possible. Please, enter IP address.",
+                    Snackbar.make(findViewById(R.id.linear_layout_login), R.string.ip_address_not_saved,
                             BaseTransientBottomBar.LENGTH_LONG).show();
                 }
             }
@@ -82,15 +83,27 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         if (ServiceLocator.getAuthRepository().loadIP().isEmpty()) {
-            settingsImageView.setColorFilter(getResources().getColor(R.color.colorPrimary));
-            Snackbar.make(findViewById(R.id.linear_layout_login), "IP address not saved, connection to server is not possible",
+
+            playAnimation(settingsImageView);
+
+
+            settingsImageView.setColorFilter(getResources().getColor(R.color.colorRed));
+            Snackbar.make(findViewById(R.id.linear_layout_login), R.string.ip_address_not_saved,
                     BaseTransientBottomBar.LENGTH_LONG).show();
         } else {
             settingsImageView.setColorFilter(getResources().getColor(R.color.colorPrimary));
-            Snackbar.make(findViewById(R.id.linear_layout_login), "IP address saved, you can connect to server",
+            Snackbar.make(findViewById(R.id.linear_layout_login), R.string.ip_address_saved,
                     BaseTransientBottomBar.LENGTH_LONG).show();
         }
         super.onResume();
+    }
+
+    private void playAnimation(ImageView settingsImageView) {
+        YoYo.with(Techniques.Pulse)
+                .duration(500)
+                .repeat(5)
+                .pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+                .playOn(settingsImageView);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -113,5 +126,22 @@ public class LoginActivity extends AppCompatActivity {
         } else
             Log.d("stLog", "Сервис уже запущен");
         finish();
+    }
+
+    @Override
+    public void onSaveIPAddress(boolean successfulConnection) {
+        if (!ServiceLocator.getAuthRepository().loadIP().isEmpty() && successfulConnection) {
+            settingsImageView.setColorFilter(getResources().getColor(R.color.colorPrimary));
+            Snackbar.make(findViewById(R.id.linear_layout_login), R.string.ip_address_saved,
+                    BaseTransientBottomBar.LENGTH_LONG).show();
+        } else {
+            settingsImageView.setColorFilter(getResources().getColor(R.color.colorRed));
+            Snackbar.make(findViewById(R.id.linear_layout_login), R.string.ip_address_not_saved,
+                    BaseTransientBottomBar.LENGTH_LONG).show();
+            playAnimation(settingsImageView);
+
+        }
+
+
     }
 }

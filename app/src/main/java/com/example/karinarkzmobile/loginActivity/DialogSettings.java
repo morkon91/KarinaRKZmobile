@@ -46,6 +46,11 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
     private AsyncTask asyncTask;
     private ConnectionState message;
 
+    private ISettingsDialog loginActivity;
+
+    public DialogSettings(ISettingsDialog loginActivity) {
+        this.loginActivity = loginActivity;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,7 +100,7 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                     infoAboutIPTextView.setText("");
                 } else {
                     infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
-                    infoAboutIPTextView.setText("Please, enter IP address");
+                    infoAboutIPTextView.setText(R.string.please_enter_IP_address);
                 }
                 break;
         }
@@ -170,24 +175,25 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                 switch (state){
                     case CONNECTION_SUCCESS:
                         infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        infoAboutIPTextView.setText("Connection Successful");
                         authRepository.saveIP(addIPAddressTextInput.getText().toString());
+                        loginActivity.onSaveIPAddress(true);
                         dismiss();
                         break;
                     case EMPTY_RESPONSE:
-                        Log.d(LOG_TAG, "Connection NOT Successful: empty response from server.");
                         infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
-                        infoAboutIPTextView.setText("Connection NOT Successful. Empty response from server.");
+                        infoAboutIPTextView.setText(getString(R.string.empty_response));
                         authRepository.saveIP(addIPAddressTextInput.getText().toString());
+                        loginActivity.onSaveIPAddress(false);
                         break;
                     case INVALID_IP_ADDRESS:
                         infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
-                        infoAboutIPTextView.setText("Connection NOT Successful. \nInvalid ip address");
+                        infoAboutIPTextView.setText(getString(R.string.invalid_ip));
                         break;
                     case SERVER_NOT_RESPONSE:
                         infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
-                        infoAboutIPTextView.setText("Connection NOT Successful. \nNo response from server");
+                        infoAboutIPTextView.setText(getString(R.string.no_response));
                         authRepository.saveIP(addIPAddressTextInput.getText().toString());
+                        loginActivity.onSaveIPAddress(false);
                         break;
                 }
 
@@ -207,6 +213,4 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
             call.cancel();
         }
     }
-
-
 }

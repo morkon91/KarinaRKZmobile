@@ -149,13 +149,16 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
         switch (code) {
             case 101:
                 for (INewEventObserver observer : subscribersList) {
-                    observer.handleDisconnect("No connection to server. Please check: \nIs wifi enabled or does the server work.");
+//                    observer.handleDisconnect("No connection to server. Please check: Is wifi enabled or does the server work.");
+                    observer.handleDisconnect(101);
                 }
                 break;
             case 102:
                 for (INewEventObserver observer : subscribersList) {
-                    observer.handleDisconnect("No response from server. Please check: \nIs the server working correctly.");
+//                    observer.handleDisconnect("No response from server. Please check: Is the server working correctly.");
+                    observer.handleDisconnect(102);
                 }
+
                 break;
         }
 

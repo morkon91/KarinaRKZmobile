@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Karina.R.KZ.mobile</string>
+
+
+    <string name="alert_event_information">Информация о тревожном событии</string>
+    <string name="temperature_photo">Ффото с тепловизора</string>
+    <string name="ordinary_photo">Фото с камеры</string>
+    <string name="alarm_event">Тревожное событие</string>
+    <string name="time_of_alarm_event">Время тревожного события</string>
+    <string name="detected_temperature">Выявленная температура</string>
+    <string name="log_in_to">Авторизация</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="add_ip_address">Добавить IP-адрес</string>
+    <string name="settings">Настройки</string>
+    <string name="disconnect_from_server">Отключиться от сервера</string>
+    <string name="connect_to_server">Подключиться к серверу</string>
+    <string name="lose_application">Выйти из приложения</string>
+    <string name="count_of_events">Количество событий: </string>
+    <string name="new_alarm_notification">Есть новые тревожные события</string>
+    <string name="no_alarm_notification">Нет новых тревожных событий</string>
+    <string name="do_you_want_to_exit_the_application">Вы хотите выйти из приложения?</string>
+    <string name="you_are_already_connected_to_the_server">Вы уже подключены к серверу.</string>
+    <string name="you_are_already_disconnected_from_the_server">Вы уже отключены от сервера</string>
+    <string name="you_are_disconnected_from_the_server">Вы отключились от сервера</string>
+    <string name="connection_to_server_restored">Подключение к серверу восстановлено</string>
+    <string name="empty_response">Не удалось подключиться. \nСервер присылает пустой ответ</string>
+    <string name="invalid_ip">Не удалось подключиться. \nНеверный IP-адрес</string>
+    <string name="no_response">Не удалось подключиться. \nСервер не отвечает</string>
+    <string name="invalid_login_or_password">Неверный логин или пароль</string>
+    <string name="ip_address_not_saved">Не сохранен IP-адрес. Введите верный IP-адрес в настройках</string>
+    <string name="ip_address_saved">IP-адрес сохранен. Вы можете войти в систему</string>
+    <string name="please_enter_IP_address">Пожалуйста, введите IP-адрес</string>
+    <string name="permanent_server_connection_resumed">Подключение к серверу восстановлено</string>
+    <string name="permanent_connection_to_the_server_is_already_active">Вы уже подключены к серверу</string>
+    <string name="yes">ДА</string>
+    <string name="no">НЕТ</string>
+    <string name="confirm_ip_address">Проверить подключение</string>
+    <string name="no_connection_to_server_Please_check">Нет подключения к серверу. Проверьте:</string>
+    <string name="is_wifi_enabled">включен ли Wi-fi, работает ли сервер</string>
+    <string name="no_response_from_server_Please_check">Нет ответа от свервера. Проверьте:</string>
+    <string name="is_the_server_working_correctly">Правильно ли работает сервер</string>
+    <string name="alarm_notification">Оповещение</string>
+
+</resources>
