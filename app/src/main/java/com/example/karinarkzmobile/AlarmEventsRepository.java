@@ -72,13 +72,13 @@ public class AlarmEventsRepository implements IAlarmEvents.Repository, INewEvent
 
                     alarmDataList = new ArrayList<>(downloadedList);
                     Log.d(LOG_TAG, "Размер списка для отображения: " + alarmDataList.size());
-//                    for (int i = 0; i < alarmDataList.size(); i++) {
-//                        Log.d(LOG_TAG,
-//                                "обычная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getOrdinaryPhotoURL());
-//                        Log.d(LOG_TAG,
-//                                "температурная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getTemperaturePhotoURL());
-//                        Log.d(LOG_TAG, "int id элемента списка № " + i + " = " + alarmDataList.get(i).getEventIDint());
-//                    }
+                    for (int i = 0; i < alarmDataList.size(); i++) {
+                        Log.d(LOG_TAG,
+                                "обычная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getOrdinaryPhotoURL());
+                        Log.d(LOG_TAG,
+                                "температурная фотка элемента массива №" + i + " = " + alarmDataList.get(i).getTemperaturePhotoURL());
+                        Log.d(LOG_TAG, "int id элемента списка № " + i + " = " + alarmDataList.get(i).getEventIDint());
+                    }
 
 //                    newEvents = createNewElementList(eventsSeenList, alarmDataList);
 

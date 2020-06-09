@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.karinarkzmobile.R;
 import com.example.karinarkzmobile.data.AlarmData;
 import com.example.karinarkzmobile.mainActivity.alarmEventsFragment.AlarmEventsFragment;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ public class EventInfoActivity extends AppCompatActivity {
     private TemperaturePhotoFragment temperaturePhotoFragment;
 
     private TextView locationEventInfo, timeOfAlarmEventInfo, detectedTemperature;
+
+//    private TextView tempPhoto, ordPhoto;
 
     private AlarmData alarmEvent;
 
@@ -54,6 +58,11 @@ public class EventInfoActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
 
+//        tempPhoto = findViewById(R.id.temp_photo);
+//        ordPhoto = findViewById(R.id.ord_photo);
+//        tempPhoto.setText(alarmEvent.getTemperaturePhotoURL());
+//        ordPhoto.setText(alarmEvent.getOrdinaryPhotoURL());
+
         ordinaryPhotoFragment = new OrdinaryPhotoFragment();
         ordinaryPhotoFragment.setArguments(getIntent().getExtras());
 
@@ -74,6 +83,8 @@ public class EventInfoActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -107,5 +118,12 @@ public class EventInfoActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return fragmentTitle.get(position);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Glide.get(this).clearMemory();
+        Fresco.getImagePipeline().clearCaches();
+        super.onDestroy();
     }
 }

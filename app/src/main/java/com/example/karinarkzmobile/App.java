@@ -42,7 +42,7 @@ public class App extends Application {
         instance = this;
 
         authMap.put("111", "111");
-        authMap.put("222", "222");
+        authMap.put("login", "111222333");
     }
 
     private void createNotificationChannel() {

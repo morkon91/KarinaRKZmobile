@@ -84,12 +84,25 @@
         android:layout_gravity="center"
         android:layout_marginHorizontal="50dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+
         android:text="@string/confirm_ip_address"
         app:cornerRadius="8dp"
         app:iconGravity="textStart" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/info_about_exception"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:gravity="center"
+        android:text="Info about IP address"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        android:minLines="1"
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"
 
-
-
+        />
 </LinearLayout>

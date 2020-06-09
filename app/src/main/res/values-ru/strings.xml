@@ -3,7 +3,7 @@
 
 
     <string name="alert_event_information">Информация о тревожном событии</string>
-    <string name="temperature_photo">Ффото с тепловизора</string>
+    <string name="temperature_photo">Фото с тепловизора</string>
     <string name="ordinary_photo">Фото с камеры</string>
     <string name="alarm_event">Тревожное событие</string>
     <string name="time_of_alarm_event">Время тревожного события</string>

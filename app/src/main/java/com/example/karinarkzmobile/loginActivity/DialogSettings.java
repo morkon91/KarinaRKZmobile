@@ -38,7 +38,9 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
     private TextInputEditText addIPAddressTextInput;
     private ISharedPreferences authRepository = ServiceLocator.getAuthRepository();
     private TextView infoAboutIPTextView;
+    private TextView exceptionOfIPAddressTextView;
     private ImageView imageViewDialogTitle;
+    private Exception exceptionOfIPAddress;
     ProgressBar progressBar;
     private final String LOG_TAG = "myLogs";
     private Call<Response> call;
@@ -78,6 +80,8 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
 
         infoAboutIPTextView = view.findViewById(R.id.info_about_ip_dialog_login);
         infoAboutIPTextView.setText("");
+        exceptionOfIPAddressTextView = view.findViewById(R.id.info_about_exception);
+        exceptionOfIPAddressTextView.setText("");
 
         imageViewDialogTitle = view.findViewById(R.id.imageView_dialog_title);
         imageViewDialogTitle.setColorFilter(getResources().getColor(R.color.colorAccent));
@@ -153,12 +157,14 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                     Log.d(LOG_TAG, "Exeption: " + e);
 //                    message = "Connection NOT Successful. \nInvalid ip address";
                     message = ConnectionState.INVALID_IP_ADDRESS;
+                    exceptionOfIPAddress = e;
                     e.printStackTrace();
                 } catch (IOException e) {
                     Log.d(LOG_TAG, "Connection NOT Successful:");
                     Log.d(LOG_TAG, "Exeption: " + e);
 //                    message = "Connection NOT Successful. \nNo response from server";
                     message = ConnectionState.SERVER_NOT_RESPONSE;
+                    exceptionOfIPAddress = e;
                     e.printStackTrace();
                 }
                 return message;
@@ -184,16 +190,22 @@ public class DialogSettings extends DialogFragment implements View.OnClickListen
                         infoAboutIPTextView.setText(getString(R.string.empty_response));
                         authRepository.saveIP(addIPAddressTextInput.getText().toString());
                         loginActivity.onSaveIPAddress(false);
+//                        exceptionOfIPAddressTextView.setVisibility(View.VISIBLE);
+//                        exceptionOfIPAddressTextView.setText(exceptionOfIPAddress.toString());
                         break;
                     case INVALID_IP_ADDRESS:
                         infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
                         infoAboutIPTextView.setText(getString(R.string.invalid_ip));
+//                        exceptionOfIPAddressTextView.setVisibility(View.VISIBLE);
+//                        exceptionOfIPAddressTextView.setText(exceptionOfIPAddress.toString());
                         break;
                     case SERVER_NOT_RESPONSE:
                         infoAboutIPTextView.setTextColor(getResources().getColor(R.color.colorRed));
                         infoAboutIPTextView.setText(getString(R.string.no_response));
                         authRepository.saveIP(addIPAddressTextInput.getText().toString());
                         loginActivity.onSaveIPAddress(false);
+//                        exceptionOfIPAddressTextView.setVisibility(View.VISIBLE);
+//                        exceptionOfIPAddressTextView.setText(exceptionOfIPAddress.toString());
                         break;
                 }
 
