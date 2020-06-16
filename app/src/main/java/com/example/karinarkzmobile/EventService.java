@@ -151,7 +151,7 @@ public class EventService extends Service implements INewEventObserver {
                 .setContentTitle(message)
                 .setContentText(getString(R.string.count_of_events) + " " + updatedEventsCount)
                 .setTicker("setTicker")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_warning_black_24dp)
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .addAction(0, getString(R.string.disconnect_from_server), cancelPendingIntent)

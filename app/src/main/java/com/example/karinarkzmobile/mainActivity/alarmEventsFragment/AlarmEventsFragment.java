@@ -122,9 +122,13 @@ public class AlarmEventsFragment extends Fragment implements IAlarmEvents.View, 
 
     @Override
     public void onResume() {
+
+        if (isMyServiceRunning(EventService.class))
         mPresenter.setEventsSeenList();
+
         if (!isMyServiceRunning(EventService.class))
             mPresenter.getAlarmEvents();
+
         super.onResume();
     }
 
